@@ -1,0 +1,1927 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>剑网三烟花成就记录</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&display=swap">
+<style>
+/* ── 全局 ───────────────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:        #FCF9F2;
+  --surface:   #FFFFFF;
+  --border:    #E0DCD3;
+  --border-soft:#EDE8E0;
+  --primary:   #B4534B;
+  --primary-dk:#96403A;
+  --gold:      #A88462;
+  --gold-lt:   #F0E8DA;
+  --text:      #2D2016;
+  --text-2:    #7A6855;
+  --text-3:    #A89880;
+  --hover-row: #F2F6FA;
+  --shadow-sm: 0 2px 8px rgba(45,32,22,.07);
+  --shadow-md: 0 4px 20px rgba(45,32,22,.10);
+  --radius:    12px;
+  /* 账号色条（莫兰迪色系） */
+  --acc1: #5C7A95;
+  --acc2: #7A5C95;
+  --acc3: #4E8A6A;
+  --acc4: #B4534B;
+  --acc5: #8A7250;
+}
+body{
+  font-family:'Microsoft YaHei UI','微软雅黑','Helvetica Neue',sans-serif;
+  color:var(--text);
+  min-height:100vh;
+  background-color:var(--bg);
+  /* 层① 散落烟花余烬散点纹理（SVG data URI，repeat 铺满全页） */
+  background-image:
+    url("data:image/svg+xml,%3Csvg width='220' height='220' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='28' r='2' fill='rgba(168,132,98,0.13)'/%3E%3Ccircle cx='95' cy='52' r='1.2' fill='rgba(180,83,75,0.09)'/%3E%3Ccircle cx='158' cy='33' r='1.8' fill='rgba(168,132,98,0.10)'/%3E%3Ccircle cx='52' cy='108' r='1.5' fill='rgba(92,122,149,0.08)'/%3E%3Ccircle cx='135' cy='92' r='1' fill='rgba(168,132,98,0.11)'/%3E%3Ccircle cx='180' cy='148' r='2.2' fill='rgba(180,83,75,0.08)'/%3E%3Ccircle cx='18' cy='168' r='1.3' fill='rgba(168,132,98,0.10)'/%3E%3Ccircle cx='98' cy='180' r='1.5' fill='rgba(92,122,149,0.07)'/%3E%3Ccircle cx='165' cy='172' r='1.2' fill='rgba(168,132,98,0.09)'/%3E%3Ccircle cx='70' cy='65' r='1' fill='rgba(180,83,75,0.07)'/%3E%3Ccircle cx='210' cy='80' r='1.5' fill='rgba(168,132,98,0.08)'/%3E%3Ccircle cx='10' cy='50' r='1' fill='rgba(92,122,149,0.07)'/%3E%3C/svg%3E");
+  background-repeat:repeat;
+  background-size:220px 220px;
+  background-attachment:fixed;
+}
+
+/* 层② 右下角烟花余晖渐变晕光（CSS only，无图片） */
+body::after{
+  content:'';
+  position:fixed;
+  bottom:-120px;
+  right:-120px;
+  width:600px;
+  height:600px;
+  background:
+    radial-gradient(circle at 55% 55%, rgba(180,83,75,.10) 0%, transparent 45%),
+    radial-gradient(circle at 25% 70%, rgba(168,132,98,.12) 0%, transparent 40%),
+    radial-gradient(circle at 75% 28%, rgba(92,122,149,.07) 0%, transparent 45%);
+  filter:blur(35px);
+  pointer-events:none;
+  z-index:0;
+}
+.header,.main-tabs,.content{position:relative;z-index:1}
+
+/* ── 顶栏 ───────────────────────────────────────────── */
+.header{position:relative;background:linear-gradient(160deg,#F4EDE0,#EAE0D4);padding:20px 48px;text-align:center;border-bottom:1px solid var(--border);box-shadow:0 1px 12px rgba(45,32,22,.08)}
+.header h1{font-family:'Noto Serif SC','SimSun','宋体',serif;font-size:2em;letter-spacing:6px;font-weight:600;background:linear-gradient(135deg,#3D2A1E 0%,#5C7A95 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header h1::after{content:'';display:block;width:140px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:10px auto 0}
+.header p{color:var(--text-2);margin-top:6px;font-size:0.88em;letter-spacing:1px}
+
+/* ── 主标签 ─────────────────────────────────────────── */
+.main-tabs{display:flex;background:#F0EBE2;border-bottom:1px solid var(--border)}
+.main-tab{padding:13px 28px;cursor:pointer;color:var(--text-2);border-bottom:2px solid transparent;transition:all .2s;font-size:14px;letter-spacing:1px}
+.main-tab:hover{color:var(--primary);background:#EDE6DA}
+.main-tab.active{color:var(--primary);border-bottom-color:var(--primary);background:#EDE6DA;font-weight:bold}
+
+.content{padding:24px;max-width:1500px;margin:0 auto}
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* ── 烟花胶囊 ───────────────────────────────────────── */
+.fw-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;align-items:center;padding-bottom:16px;border-bottom:1px solid var(--border-soft)}
+.fw-pill{padding:6px 18px;border:1px solid var(--border);border-radius:20px;cursor:pointer;color:var(--text-2);background:var(--surface);transition:all .2s;font-size:14px;display:flex;align-items:center;gap:6px;user-select:none;box-shadow:var(--shadow-sm)}
+.fw-pill:hover{border-color:var(--primary);color:var(--primary);background:#FEF8F6}
+.fw-pill.active{background:#FEF0EE;border-color:var(--primary);color:var(--primary);box-shadow:0 3px 10px rgba(180,83,75,.15);position:relative}
+.fw-pill.active::after{content:'';position:absolute;bottom:-1px;left:15%;right:15%;height:2px;background:linear-gradient(90deg,transparent,var(--primary) 40%,var(--primary) 60%,transparent);border-radius:2px}
+.fw-pill.is-archived{opacity:.45;text-decoration:line-through}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot-full{background:#4CAF72}
+.dot-partial{background:#CFA020}
+.dot-empty{background:#C05040}
+
+/* ── 按钮 ───────────────────────────────────────────── */
+.btn{padding:7px 16px;border:1px solid;border-radius:7px;cursor:pointer;font-size:13px;transition:all .2s;font-family:inherit}
+.btn-add{background:var(--surface);border-color:var(--border);color:var(--text-2)}.btn-add:hover{border-color:var(--primary);color:var(--primary);background:#FEF8F6}
+.btn-archive{background:#EDF7F0;border-color:#8AC4A0;color:#2A6A3A}.btn-archive:hover{background:#DCF0E4}
+.btn-calc{background:#EDF3FB;border-color:#8AAED4;color:#2A4E80}.btn-calc:hover:not(:disabled){background:#DCE8F8}
+.btn-calc:disabled{opacity:.42;cursor:not-allowed}
+.calc-btn-wrap{position:relative;display:inline-flex}
+.calc-btn-wrap::after{content:'请先选择烟花后再计算';position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(3px);background:rgba(38,26,16,.86);color:#fff;font-size:12px;padding:5px 12px;border-radius:6px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s,transform .15s}
+.calc-btn-wrap.show-tip:hover::after{opacity:1;transform:translateX(-50%) translateY(0)}
+.btn-del{background:rgba(180,83,75,.08);border-color:rgba(180,83,75,.3);color:var(--primary);font-size:11px;padding:3px 10px;border-radius:5px}.btn-del:hover{background:rgba(180,83,75,.15)}
+
+/* ── 成就面板 ───────────────────────────────────────── */
+.fw-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md)}
+.fw-section-header{background:var(--gold-lt);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--border)}
+.fw-section-title{font-family:'Noto Serif SC','SimSun',serif;font-size:1.15em;color:#4A2E1A;letter-spacing:3px}
+.header-actions{display:flex;gap:8px;align-items:center}
+
+/* ── 表格 ───────────────────────────────────────────── */
+table{width:100%;border-collapse:collapse}
+th{background:var(--gold-lt);color:#666;padding:11px 16px;text-align:center;border-bottom:1px solid var(--border);font-weight:700;font-size:12px;white-space:nowrap;letter-spacing:1.5px}
+th:first-child,th:nth-child(2){text-align:left}
+td{padding:14px 16px;border-bottom:1px solid var(--border-soft);text-align:center;font-size:14px;color:#333}
+tbody tr:nth-child(odd):not(.acc-sep) td{background:#FFFFFF}
+tbody tr:nth-child(even):not(.acc-sep) td{background:#FAFBFC}
+tr:hover:not(.acc-sep) td{background:var(--hover-row)!important}
+/* 账号分隔行 */
+.acc-sep td{background:linear-gradient(90deg,#EEE8DE 0%,#F6F2EC 100%);color:var(--text-2);font-weight:700;padding:10px 16px 10px 18px;font-size:11px;letter-spacing:3px;border-bottom:1px solid var(--border);border-top:1px solid var(--border)}
+.acc-sep[data-acc="1"] td{border-left:4px solid var(--acc1)}
+.acc-sep[data-acc="2"] td{border-left:4px solid var(--acc2)}
+.acc-sep[data-acc="3"] td{border-left:4px solid var(--acc3)}
+.acc-sep[data-acc="4"] td{border-left:4px solid var(--acc4)}
+.acc-sep[data-acc="5"] td{border-left:4px solid var(--acc5)}
+.char-name{text-align:left!important}
+.char-icon{width:22px;height:22px;object-fit:contain;vertical-align:middle;flex-shrink:0}
+
+/* ── 勾选 ───────────────────────────────────────────── */
+.chk{cursor:pointer;font-size:20px;user-select:none;line-height:1;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;transition:transform .15s,background .2s}
+.chk:hover{transform:scale(1.2)}
+.chk.on{color:#2E9456;background:rgba(46,148,86,.13)}
+.chk.off{color:#C8C0B8;background:transparent;font-size:18px}
+
+/* ── 存档按钮呼吸灯 ─────────────────────────────────── */
+@keyframes pulse-glow{
+  0%,100%{box-shadow:0 0 0 0 rgba(74,175,114,.5)}
+  50%{box-shadow:0 0 0 7px rgba(74,175,114,0)}
+}
+.btn-archive-pulse{animation:pulse-glow 2s ease-in-out infinite}
+
+/* ── 全完成时数量列降调 ──────────────────────────────── */
+.fw-complete .qty-wrap{opacity:.35}
+.fw-complete .qty-btn{pointer-events:none}
+
+/* ── 数量控件 ───────────────────────────────────────── */
+.qty-wrap{display:flex;align-items:center;justify-content:center;gap:4px}
+.qty-btn{background:transparent;border:none;color:#C0B8B0;width:24px;height:24px;border-radius:6px;cursor:pointer;font-size:18px;line-height:1;padding:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.qty-btn:hover{color:var(--primary);transform:scale(1.2)}
+.qty-val{min-width:36px;text-align:center;background:#F0EBE3;border:none;color:#555;font-size:13px;font-weight:600;padding:4px 6px;border-radius:6px}
+
+/* ── 搜索 ───────────────────────────────────────────── */
+.search-wrap{display:flex;gap:10px;margin-bottom:20px}
+.search-box{flex:1;position:relative;display:flex;align-items:center}
+.search-icon{position:absolute;left:14px;color:var(--text-3);font-size:16px;pointer-events:none;line-height:1}
+.search-input{width:100%;padding:11px 42px 11px 42px;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:10px;font-size:15px;font-family:inherit;box-shadow:var(--shadow-sm);transition:border-color .2s,box-shadow .2s}
+.search-input:focus{outline:none;border-color:transparent;box-shadow:0 0 0 2px var(--primary),0 0 12px rgba(180,83,75,.18),0 0 24px rgba(168,132,98,.10)}
+.search-clear{position:absolute;right:12px;background:none;border:none;color:var(--text-3);font-size:18px;cursor:pointer;line-height:1;padding:4px;border-radius:50%;transition:all .15s;display:none}
+.search-clear:hover{color:var(--primary);background:rgba(180,83,75,.08)}
+.search-clear.visible{display:flex;align-items:center;justify-content:center}
+.search-result{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow-sm)}
+.sr-header{display:flex;align-items:center;gap:14px;margin-bottom:10px;flex-wrap:wrap}
+.sr-badge{display:inline-block;padding:4px 14px;border-radius:12px;font-size:13px;font-weight:bold;flex-shrink:0}
+.sr-archived{background:#E4F5EA;border:1px solid #8AC4A0;color:#1A5E30}
+.sr-partial{background:#FEF4DC;border:1px solid #D4B040;color:#7A5200}
+.sr-none{background:#FDECEC;border:1px solid #D49090;color:#8A2020}
+.sr-notfound{background:#F4F0EA;border:1px solid #C8C0B4;color:var(--text-2)}
+/* 进度条 */
+.sr-progress-wrap{margin-bottom:16px}
+.sr-progress-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.sr-progress-label{font-size:12px;color:var(--text-3)}
+.sr-progress-count{font-size:13px;font-weight:600;color:var(--text-2)}
+.sr-progress-bar{height:5px;background:#EDE8E0;border-radius:3px;overflow:hidden}
+.sr-progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--gold));border-radius:3px;transition:width .5s ease}
+/* 搜索角色标签（新版卡片式） */
+.sr-incomplete-title{color:var(--text-3);font-size:12px;letter-spacing:.5px;margin-bottom:12px}
+.sr-tag-grid{display:flex;flex-wrap:wrap;gap:10px}
+.sr-tag{display:flex;align-items:center;gap:9px;padding:9px 14px 9px 10px;border-radius:10px;box-shadow:0 2px 10px rgba(45,32,22,.09);border:none;min-width:0;position:relative;overflow:hidden}
+.sr-tag-sect{width:28px;height:28px;object-fit:contain;flex-shrink:0;opacity:.9}
+.sr-tag-body{display:flex;flex-direction:column;gap:4px}
+.sr-tag-name{font-size:14px;font-weight:600;line-height:1;white-space:nowrap}
+.sr-tag-indicators{display:flex;gap:4px;align-items:center}
+.sr-ti{display:inline-flex;align-items:center;justify-content:center;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.5px;white-space:nowrap}
+.sr-ti-give-done{background:#DCF2E4;color:#2A7A3A}
+.sr-ti-give-miss{background:#F0ECE6;color:#B8B0A8}
+.sr-ti-recv-done{background:#DCE8F8;color:#2A5080}
+.sr-ti-recv-miss{background:#F0ECE6;color:#B8B0A8}
+/* 旧版 char-tag（计算 Tab 仍在用） */
+.incomplete-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.char-tag{padding:5px 12px;border-radius:20px;font-size:13px;white-space:nowrap}
+.tag-give{background:#F6EEFA;border:1px solid #C8A0DC;color:#5A1878}
+.tag-recv{background:#EAF2FC;border:1px solid #88B8E0;color:#1A4070}
+.tag-both{background:#FEF8E4;border:1px solid #D0B840;color:#504000}
+
+/* ── 存档 ───────────────────────────────────────────── */
+.archive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:4px}
+.archive-card{background:var(--surface);border:1px solid #90C8A4;border-top:3px solid #4CAF72;border-radius:var(--radius);padding:20px;text-align:center;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:0}
+.archive-card .ac-name{font-family:'Noto Serif SC','SimSun',serif;font-size:1.1em;color:#4A2E1A;margin-bottom:6px;letter-spacing:1px}
+.archive-card .ac-date{color:#608060;font-size:12px}
+.archive-card .ac-chars{font-size:12px;color:#3A7A4A;margin-top:6px;margin-bottom:10px}
+/* 存档卡片底部进度条 */
+.ac-progress{height:3px;background:#D8F0DF;border-radius:0 0 4px 4px;margin:-20px -20px 14px;overflow:hidden}
+.ac-progress-fill{height:100%;background:linear-gradient(90deg,#4CAF72,#A8C830);border-radius:3px}
+/* 取消存档 — 弱化样式，hover 才变红 */
+.btn-unarchive{background:transparent;border:1px solid #C8C0B4;color:#A89880;font-size:11px;padding:3px 10px;border-radius:5px;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-unarchive:hover{background:rgba(180,83,75,.10);border-color:rgba(180,83,75,.45);color:#8A1A1A}
+/* 空状态引导 */
+.empty-archive{text-align:center;padding:64px 24px 48px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.empty-archive-icon{font-size:52px;opacity:.35;line-height:1}
+.empty-archive-text{color:var(--text-3);font-size:1em;line-height:1.8}
+.empty-archive-text a{color:var(--gold);cursor:pointer;text-decoration:none}
+.empty-archive-text a:hover{text-decoration:underline}
+.empty-msg{text-align:center;color:var(--text-3);padding:56px;font-size:1.05em}
+
+/* ── 计算 ───────────────────────────────────────────── */
+.calc-fw-row{display:flex;gap:12px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+/* 自定义烟花下拉选择器 */
+.fw-select-wrap{position:relative;min-width:200px}
+.fw-select-trigger{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 14px;border:1.5px solid var(--border);border-radius:8px;background:var(--surface);cursor:pointer;font-size:14px;color:var(--text);transition:border-color .15s,box-shadow .15s;user-select:none;font-family:inherit}
+.fw-select-trigger:focus{outline:none}
+.fw-select-trigger.no-selection{color:var(--text-3)}
+@keyframes fw-glow{0%,100%{box-shadow:0 0 0 0 rgba(180,83,75,.20)}50%{box-shadow:0 0 0 5px rgba(180,83,75,.0)}}
+.fw-select-trigger.no-selection{animation:fw-glow 2.8s ease-in-out infinite}
+.fw-select-trigger.has-selection{border-color:rgba(180,83,75,.38)}
+.fw-select-wrap.open .fw-select-trigger{border-color:var(--primary);box-shadow:0 0 0 3px rgba(180,83,75,.10);animation:none;color:var(--text)}
+.fw-select-arrow{color:var(--text-3);font-size:11px;transition:transform .2s;flex-shrink:0}
+.fw-select-wrap.open .fw-select-arrow{transform:rotate(180deg)}
+.fw-select-dropdown{position:absolute;top:calc(100% + 5px);left:0;min-width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 6px 22px rgba(45,32,22,.13);z-index:200;overflow:hidden;display:none;max-height:280px;overflow-y:auto}
+.fw-select-wrap.open .fw-select-dropdown{display:block}
+.fw-select-opt{display:flex;align-items:center;gap:8px;padding:9px 14px;cursor:pointer;font-size:14px;color:var(--text);transition:background .12s;white-space:nowrap}
+.fw-select-opt:hover{background:var(--gold-lt)}
+.fw-select-opt.selected{background:#FDF4EC;color:var(--primary);font-weight:600}
+.fw-opt-name{flex:1}
+.fw-opt-badge{font-size:10px;padding:2px 7px;border-radius:10px;background:#E4F5EA;border:1px solid #8AC4A0;color:#2A7A3A;white-space:nowrap;flex-shrink:0}
+/* 规则气泡 */
+.calc-rule-tip{position:relative;display:inline-flex;align-items:center}
+.calc-rule-btn{background:none;border:1px solid #DDD0A0;border-radius:20px;color:#A89060;font-size:12px;cursor:default;padding:4px 11px;font-family:inherit;line-height:1;white-space:nowrap;transition:background .15s,color .15s,border-color .15s}
+.calc-rule-tip:hover .calc-rule-btn{background:#FEFAED;color:#6A5820;border-color:#C8B070}
+.calc-rule-pop{position:absolute;top:calc(100% + 9px);right:0;width:340px;background:#FEFAED;border:1px solid #DDD0A0;border-radius:10px;padding:13px 16px;font-size:13px;color:#6A5820;line-height:1.85;z-index:80;box-shadow:0 6px 20px rgba(80,60,20,.10);pointer-events:none;opacity:0;transform:translateY(-4px);transition:opacity .18s,transform .18s}
+.calc-rule-tip:hover .calc-rule-pop{opacity:1;transform:translateY(0);pointer-events:auto}
+.calc-rule-pop::before{content:'';position:absolute;top:-6px;right:18px;width:10px;height:10px;background:#FEFAED;border-left:1px solid #DDD0A0;border-top:1px solid #DDD0A0;transform:rotate(45deg)}
+/* 结论汇总栏 */
+.calc-summary{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#F8F2E8,#F2EBE0);border:1px solid #DDD0B8;border-radius:10px;padding:13px 18px;margin-bottom:20px;flex-wrap:wrap}
+.calc-summary-label{font-size:13px;color:var(--text-2);flex-shrink:0}
+.calc-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 13px;border-radius:20px;font-size:13px;font-weight:700;white-space:nowrap}
+.calc-badge-sessions{background:#EDF3FB;border:1px solid #8AAED4;color:#1A4070}
+.calc-badge-switches{background:#FEF4DC;border:1px solid #D4B040;color:#6A4800}
+.calc-badge-done{background:#E4F5EA;border:1px solid #8AC4A0;color:#1A5E30}
+/* 步骤连接线 */
+.step-connector{display:flex;flex-direction:column;align-items:center;gap:0;margin:0 auto 0;padding:2px 0;position:relative}
+.step-connector-line{width:2px;height:18px;background:repeating-linear-gradient(to bottom,var(--border) 0,var(--border) 4px,transparent 4px,transparent 8px)}
+.step-connector-label{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:3px 14px;font-size:12px;color:var(--primary);font-weight:600;white-space:nowrap;letter-spacing:.3px}
+.step-connector-line2{width:2px;height:18px;background:repeating-linear-gradient(to bottom,var(--border) 0,var(--border) 4px,transparent 4px,transparent 8px)}
+/* 步骤卡片 */
+.session-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);transition:opacity .25s,border-color .25s}
+.session-card.sess-done{opacity:.45;border-color:#90C8A0}
+.session-card.sess-done .session-head{background:#EDF7F0}
+.session-card.sess-done .session-num{background:#4CAF72}
+.session-head{background:var(--gold-lt);padding:11px 18px;color:#4A2E1A;font-weight:bold;display:flex;align-items:center;gap:8px;font-size:14px;border-bottom:1px solid var(--border)}
+.session-head-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.session-num{background:var(--primary);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.sess-check{appearance:none;-webkit-appearance:none;width:18px;height:18px;border-radius:5px;border:2px solid #B0C8A0;cursor:pointer;flex-shrink:0;position:relative;background:transparent;transition:all .2s}
+.sess-check:checked{background:#4CAF72;border-color:#3A9060}
+.sess-check:checked::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;line-height:1}
+.sess-check-label{font-size:11px;color:#A89880;cursor:pointer;user-select:none}
+.session-body{padding:14px 18px}
+/* 角色卡片行 */
+.action-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;margin-bottom:4px;font-size:14px;color:var(--text-2);flex-wrap:wrap}
+.action-row:last-child{margin-bottom:0}
+.action-row-warn{background:rgba(176,112,32,.07);border:1px solid rgba(176,112,32,.2)}
+.a-chip{display:inline-flex;align-items:center;gap:5px;background:#F4EFE8;border:1px solid var(--border);border-radius:7px;padding:4px 10px;font-weight:600;font-size:13px;white-space:nowrap}
+.a-chip.dummy{opacity:.5;font-weight:400}
+.a-chip-acc{font-size:11px;color:var(--text-3);font-weight:400}
+.a-arrow{color:var(--primary);font-size:16px;flex-shrink:0}
+.a-mutual{display:inline-flex;align-items:center;justify-content:center;background:#E4F5EA;border:1px solid #8AC4A0;border-radius:12px;color:#2A7A3A;font-size:11px;font-weight:700;padding:2px 9px;white-space:nowrap;flex-shrink:0}
+.a-cycle{display:inline-flex;align-items:center;justify-content:center;background:#EDF3FB;border:1px solid #8AAED4;border-radius:12px;color:#1A4070;font-size:11px;font-weight:700;padding:2px 9px;white-space:nowrap;flex-shrink:0;transition:background .15s,box-shadow .15s,color .15s}
+.a-cycle.cycle-active{background:#C6DDEF;color:#0D2F5E;box-shadow:0 0 0 3px rgba(26,64,112,.18);animation:cycle-ripple .5s ease-out}
+@keyframes cycle-ripple{0%{box-shadow:0 0 0 0 rgba(26,64,112,.45)}100%{box-shadow:0 0 0 8px rgba(26,64,112,.0)}}
+.a-warn-tag{display:inline-flex;align-items:center;gap:4px;background:rgba(176,112,32,.12);border:1px solid rgba(176,112,32,.25);border-radius:5px;color:#8A5A10;font-size:11px;padding:2px 7px;white-space:nowrap}
+/* 库存徽章 */
+.inv-badge{display:inline-flex;align-items:center;gap:2px;font-size:10px;font-weight:700;background:#EDF3FB;border:1px solid #AACCE8;color:#2A5080;border-radius:4px;padding:1px 5px;margin-left:4px;white-space:nowrap;flex-shrink:0}
+.inv-badge.inv-zero{background:#FEF0EE;border-color:#E8A8A0;color:#8A1A1A}
+/* 库存抵扣绿标 */
+.a-covered-tag{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;background:#E4F5EA;border:1px solid #8AC4A0;color:#1A5E30;white-space:nowrap;flex-shrink:0}
+/* 需购买角色 chip 高亮 */
+.a-chip.needs-buy{border-color:#D09090;background:#FEF4F2}
+/* 成本汇总栏 */
+.cost-bar{display:flex;align-items:center;gap:10px;background:#FEFAED;border:1px solid #DDD0A0;border-radius:9px;padding:10px 16px;margin-bottom:16px;flex-wrap:wrap}
+.cost-label{font-size:13px;color:#6A5820;flex-shrink:0}
+.cost-badge{display:inline-flex;align-items:center;padding:3px 11px;border-radius:14px;font-size:12px;font-weight:700;white-space:nowrap}
+.cost-covered{background:#EDF3FB;border:1px solid #8AAED4;color:#1A4070}
+.cost-buy{background:#FEF4DC;border:1px solid #D4A840;color:#7A4800}
+.cost-done{background:#E4F5EA;border:1px solid #8AC4A0;color:#1A5E30}
+.needs-summary{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px}
+.needs-title{color:var(--text-2);margin-bottom:6px;font-size:13px;letter-spacing:.5px;display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.needs-hint{font-size:11px;color:var(--text-3);font-weight:400;font-style:italic}
+.char-tag{cursor:pointer;user-select:none;transition:opacity .15s,filter .15s}
+.char-tag.non-priority{opacity:.42;filter:grayscale(.5)}
+.priority-star{font-size:10px;margin-right:2px;vertical-align:middle}
+/* Phase B session */
+.session-card.phase-b{border-style:dashed;border-color:#9CBAD8;background:#FAFCFF}
+.session-card.phase-b .session-head{background:#EFF5FB}
+.session-card.phase-b .session-num{background:#4A7AA8}
+.phase-b-tag{font-size:11px;background:#EDF3FB;border:1px solid #8AAED4;color:#1A4070;padding:1px 8px;border-radius:10px;flex-shrink:0}
+.phase-b-empty{background:#F4F8FD;border:1px dashed #9CBAD8;border-radius:10px;padding:14px 18px;color:#5A7AA8;font-size:13px;display:flex;align-items:center;gap:10px;margin-top:16px}
+.phase-b-empty-icon{font-size:16px;flex-shrink:0;opacity:.7}
+
+/* ── 弹窗 ───────────────────────────────────────────── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(45,32,22,.35);backdrop-filter:blur(3px);z-index:200;align-items:center;justify-content:center}
+.modal-bg.show{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px 30px 28px;min-width:340px;box-shadow:0 12px 40px rgba(45,32,22,.18)}
+.modal h3{font-family:'Noto Serif SC','SimSun',serif;color:#4A2E1A;margin-bottom:22px;font-size:1.15em;letter-spacing:1px}
+.fw-input-group{margin-bottom:22px}
+.modal input{width:100%;padding:11px 14px;background:var(--bg);border:1.5px solid var(--border);color:var(--text);border-radius:8px;font-size:15px;font-family:inherit;margin-bottom:6px;box-sizing:border-box;transition:border-color .15s,box-shadow .15s}
+.modal input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(180,83,75,.10)}
+.modal input.input-error{border-color:#C8504A;box-shadow:0 0 0 3px rgba(180,83,75,.12)}
+.fw-error-msg{font-size:12px;color:#B03030;padding-left:2px;display:none;line-height:1.4}
+.fw-error-msg.show{display:block}
+.btn-ok:disabled{opacity:.4;cursor:not-allowed;box-shadow:none !important;pointer-events:none}
+.modal-btns{display:flex;gap:16px;justify-content:flex-end}
+.btn-ok{background:var(--primary);border-color:var(--primary-dk);color:#fff;padding:8px 22px;border-radius:7px;transition:background .2s,box-shadow .2s}.btn-ok:hover{background:var(--primary-dk);box-shadow:0 4px 14px rgba(180,83,75,.35)}
+.btn-cancel{background:var(--bg);border:1px solid var(--border);color:var(--text-2);padding:8px 16px;border-radius:7px;transition:background .2s,border-color .2s}.btn-cancel:hover{background:var(--gold-lt);border-color:var(--gold)}
+/* 恢复确认弹窗 */
+.restore-warn{background:#FDF0F0;border:1px solid #E8C0C0;border-radius:7px;padding:10px 14px;margin-top:14px;color:#7A1A1A;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;line-height:1.5}
+/* 气泡确认框（取消存档） */
+.popover-confirm{position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px 16px;box-shadow:0 8px 28px rgba(45,32,22,.18);z-index:350;width:248px;display:none;transform:translateY(-100%)}
+.popover-confirm.show{display:block}
+.popover-confirm{--arrow-left:50%}
+.popover-confirm::after{content:'';position:absolute;bottom:-7px;left:var(--arrow-left);transform:translateX(-50%);border:7px solid transparent;border-bottom:none;border-top-color:var(--surface)}
+.popover-confirm::before{content:'';position:absolute;bottom:-8px;left:var(--arrow-left);transform:translateX(-50%);border:8px solid transparent;border-bottom:none;border-top-color:var(--border)}
+.pop-title{font-size:14px;color:var(--text);font-weight:600;margin-bottom:4px}
+.pop-note{font-size:12px;color:var(--text-3);line-height:1.6;margin-bottom:12px}
+.pop-btns{display:flex;gap:8px;justify-content:flex-end}
+.btn-pop-cancel{background:transparent;border:1px solid var(--border);color:var(--text-3);padding:5px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-family:inherit;transition:all .15s}
+.btn-pop-cancel:hover{background:var(--gold-lt);border-color:var(--gold);color:var(--text-2)}
+.btn-pop-ok{background:var(--primary);border:1px solid var(--primary-dk);color:#fff;padding:5px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:inherit;font-weight:600;transition:background .2s,box-shadow .2s}
+.btn-pop-ok:hover{background:var(--primary-dk);box-shadow:0 3px 10px rgba(180,83,75,.3)}
+
+.all-done{text-align:center;padding:32px;color:#2A7A3A;font-size:1.1em}
+
+/* ── 删除按钮抖动 ───────────────────────────────────── */
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+.btn-del:hover{animation:shake .4s ease;color:#8A1A1A;background:rgba(180,83,75,.18);border-color:rgba(180,83,75,.5)}
+
+/* ── Toast 撤销条 ───────────────────────────────────── */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#2D2016;color:#F0E8D8;padding:13px 20px;border-radius:10px;display:flex;align-items:center;gap:14px;font-size:14px;box-shadow:0 6px 24px rgba(0,0,0,.3);z-index:500;opacity:0;transition:transform .3s ease,opacity .3s ease;min-width:280px;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;pointer-events:auto}
+.toast-msg{flex:1}
+.toast-undo{background:none;border:none;color:#F0C060;font-size:14px;font-weight:700;cursor:pointer;padding:3px 8px;border-radius:5px;white-space:nowrap}
+.toast-undo:hover{background:rgba(240,192,96,.15)}
+.toast-close{background:none;border:none;color:#888;font-size:16px;cursor:pointer;padding:2px 6px;line-height:1}
+.toast-timer{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--gold));border-radius:0 0 10px 10px;transition:width linear}
+
+/* ── 日志抽屉 ───────────────────────────────────────── */
+.log-overlay{display:none;position:fixed;inset:0;background:rgba(45,32,22,.3);z-index:300;backdrop-filter:blur(2px)}
+.log-overlay.show{display:block}
+.log-drawer{position:fixed;top:0;right:-360px;width:340px;height:100vh;background:var(--surface);border-left:1px solid var(--border);box-shadow:-4px 0 20px rgba(45,32,22,.12);z-index:400;display:flex;flex-direction:column;transition:right .3s ease}
+.log-drawer.show{right:0}
+.log-drawer-head{background:var(--gold-lt);padding:16px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);flex-shrink:0}
+.log-drawer-title{font-family:'Noto Serif SC','SimSun',serif;color:#4A2E1A;font-size:1em;letter-spacing:1px}
+.log-drawer-close{background:none;border:none;color:var(--text-2);font-size:17px;cursor:pointer;line-height:1;padding:0;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s;flex-shrink:0}
+.log-drawer-close:hover{background:rgba(45,32,22,.10);color:var(--primary)}
+.log-list{flex:1;overflow-y:auto;padding:6px 0}
+.log-item{padding:12px 18px;border-bottom:1px dashed #EBE3D8;display:flex;gap:12px;align-items:flex-start;transition:background .12s}
+.log-item:hover{background:#FEFAED}
+.log-item:last-child{border-bottom:none}
+.log-icon{font-size:16px;flex-shrink:0;line-height:1.6;width:20px;text-align:center}
+.log-body{display:flex;flex-direction:column;gap:3px;min-width:0}
+.log-text{font-size:13px;color:var(--text);line-height:1.5}
+.log-ts{color:#BBBBBB;font-size:11px}
+.log-empty{text-align:center;color:var(--text-3);padding:40px;font-size:13px}
+.log-clear-row{padding:12px 16px 16px;border-top:1px solid var(--border);background:var(--surface);box-shadow:0 -4px 14px rgba(45,32,22,.07);flex-shrink:0}
+.log-clear{width:100%;margin:0;transition:background .2s,border-color .2s,color .2s}
+.btn-log{background:none;border:none;color:#7A6855;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:background .18s,color .18s;padding:0}
+.btn-log:hover{background:rgba(74,46,26,.12);color:#4A2E1A}
+
+/* ── 历史快照（存档页） ─────────────────────────────── */
+.history-section{margin-top:32px}
+.history-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid var(--border)}
+.history-title{font-family:'Noto Serif SC','SimSun',serif;color:#4A2E1A;font-size:1em;letter-spacing:1px}
+.history-hint{position:relative;display:inline-flex;align-items:center}
+.history-hint-icon{color:var(--text-3);font-size:13px;cursor:default;width:20px;height:20px;border-radius:50%;border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-style:normal;line-height:1}
+.history-hint-tip{display:none;position:absolute;right:0;top:26px;background:#2D2016;color:#F0E8D8;font-size:12px;line-height:1.6;padding:9px 13px;border-radius:8px;width:230px;z-index:50;box-shadow:0 4px 16px rgba(0,0,0,.25);white-space:normal}
+.history-hint:hover .history-hint-tip{display:block}
+.history-list{display:flex;flex-direction:column;gap:0}
+.history-item{padding:11px 16px;display:flex;justify-content:space-between;align-items:center;border-radius:8px;transition:background .15s}
+.history-item:nth-child(odd){background:#FAFBFC}
+.history-item:nth-child(even){background:var(--surface)}
+.history-item:hover{background:#F2F6FA}
+.history-item-info{display:flex;flex-direction:column;gap:2px}
+.history-ts{font-size:11px;color:var(--text-3);letter-spacing:.3px}
+.history-ts b{color:var(--text-2);font-weight:700;font-size:12px}
+.history-label{font-size:13px;color:var(--text-2)}
+.btn-restore{background:#EDF3FB;border:1px solid #8AAED4;color:#2A4E80;padding:5px 12px;font-size:12px;border-radius:6px;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-restore:hover{background:#DCE8F8;border-color:#5A8EC4}
+
+/* ── 同步 & 设置 ────────────────────────────────────── */
+.header-corner{position:absolute;top:50%;right:20px;transform:translateY(-50%);display:flex;align-items:center;gap:10px}
+.sync-status{font-size:12px;white-space:nowrap}
+.header-btn-group{display:flex;align-items:center;gap:2px;background:rgba(74,46,26,.07);border:1px solid rgba(74,46,26,.13);border-radius:30px;padding:3px 5px}
+.btn-settings{background:none;border:none;color:#7A6855;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .18s,color .18s;padding:0}
+.btn-settings:hover{background:rgba(74,46,26,.12);color:#4A2E1A}
+.settings-label{display:block;color:var(--text-2);font-size:13px;margin-bottom:8px}
+.settings-tip-card{background:#FEFAED;border:1px solid #E2D490;border-radius:8px;padding:10px 14px;margin-bottom:22px;font-size:12px;color:#6A5820;line-height:1.8}
+.settings-sync-msg-row{min-height:18px;margin-top:9px;text-align:right;font-size:12px}
+.btn-sync{background:#EDF3FB;border-color:#8AAED4;color:#2A4E80;padding:8px 14px;border-radius:7px;transition:background .15s}
+.btn-sync:hover:not(:disabled){background:#DCE8F8}
+.btn-sync:disabled{opacity:.42;cursor:not-allowed}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>剑网三 烟花成就记录</h1>
+  <p>记录每个角色的烟花成就完成情况</p>
+  <div class="header-corner">
+    <span id="sync-status" class="sync-status"></span>
+    <div class="header-btn-group">
+      <button class="btn-log" onclick="openLogDrawer()" title="操作日志">📋</button>
+      <button class="btn-settings" onclick="openSettingsModal()" title="Google Sheets 同步设置">⚙</button>
+    </div>
+  </div>
+</div>
+
+<div class="main-tabs">
+  <div class="main-tab active" onclick="switchTab('record')">成就记录</div>
+  <div class="main-tab" onclick="switchTab('archive')">已存档</div>
+  <div class="main-tab" onclick="switchTab('search')">搜索</div>
+  <div class="main-tab" onclick="switchTab('calc')">计算</div>
+</div>
+
+<div class="content">
+
+  <!-- 成就记录 Tab -->
+  <div id="tab-record" class="tab-panel active">
+    <div class="fw-bar" id="fw-bar">
+      <!-- firework pills injected here -->
+      <button class="btn btn-add" onclick="openAddModal()">＋ 添加烟花</button>
+    </div>
+    <div id="fw-content"></div>
+  </div>
+
+  <!-- 已存档 Tab -->
+  <div id="tab-archive" class="tab-panel">
+    <div id="archive-content"></div>
+  </div>
+
+  <!-- 搜索 Tab -->
+  <div id="tab-search" class="tab-panel">
+    <div class="search-wrap">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input class="search-input" id="search-input" placeholder="输入烟花名称搜索…" oninput="onSearchInput()">
+        <button class="search-clear" id="search-clear" onclick="clearSearch()" title="清除">✕</button>
+      </div>
+    </div>
+    <div id="search-result"></div>
+  </div>
+
+  <!-- 计算 Tab -->
+  <div id="tab-calc" class="tab-panel">
+    <div class="calc-fw-row">
+      <div class="fw-select-wrap" id="fw-select-wrap">
+        <div class="fw-select-trigger no-selection" id="fw-select-trigger"
+          onclick="toggleFwDropdown()" tabindex="0"
+          onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFwDropdown()}">
+          <span class="fw-select-value" id="fw-select-value">请选择要计算的烟花…</span>
+          <span class="fw-select-arrow">▾</span>
+        </div>
+        <div class="fw-select-dropdown" id="fw-select-dropdown"></div>
+      </div>
+      <div class="calc-btn-wrap show-tip" id="calc-btn-wrap">
+        <button class="btn btn-calc" id="btn-calc" onclick="doCalc()" disabled>计算方案</button>
+      </div>
+      <div class="calc-rule-tip">
+        <button class="calc-rule-btn" tabindex="-1">ⓘ 计算规则</button>
+        <div class="calc-rule-pop">
+          同一账号同一时间只能登录一个角色；同一时间最多同时开启两个账号。<br>
+          计算结果给出最少账号切换次数的方案，两两互相放烟花可同时完成双方的成就。
+        </div>
+      </div>
+    </div>
+    <div id="calc-result"></div>
+  </div>
+
+</div>
+
+<!-- Toast Undo Bar -->
+<div class="toast" id="toast">
+  <span class="toast-msg" id="toast-msg"></span>
+  <button class="toast-undo" onclick="undoDelete()">撤销</button>
+  <button class="toast-close" onclick="hideToast()">✕</button>
+  <div class="toast-timer" id="toast-timer" style="width:100%"></div>
+</div>
+
+<!-- Log Drawer Overlay -->
+<div class="log-overlay" id="log-overlay" onclick="closeLogDrawer()"></div>
+
+<!-- Log Drawer -->
+<div class="log-drawer" id="log-drawer">
+  <div class="log-drawer-head">
+    <span class="log-drawer-title">操作日志</span>
+    <button class="log-drawer-close" onclick="closeLogDrawer()">✕</button>
+  </div>
+  <div class="log-list" id="log-list"></div>
+  <div class="log-clear-row">
+    <button class="btn btn-del log-clear" id="btn-clear-log" onclick="clearLog()">清空日志</button>
+  </div>
+</div>
+
+<!-- Popover: 取消存档确认 -->
+<div class="popover-confirm" id="popover-unarchive">
+  <div class="pop-title" id="pop-unarchive-title"></div>
+  <div class="pop-note">取消后，该烟花将变回未存档状态，<br>已填写的成就记录不会被删除。</div>
+  <div class="pop-btns">
+    <button class="btn-pop-cancel" onclick="closeUnarchivePopover()">暂不取消</button>
+    <button class="btn-pop-ok" id="pop-unarchive-ok">确定取消</button>
+  </div>
+</div>
+
+<!-- Restore Snapshot Modal -->
+<div class="modal-bg" id="restore-modal">
+  <div class="modal">
+    <h3>⏪ 确认恢复版本</h3>
+    <div id="restore-modal-body">
+      <!-- filled by openRestoreModal() -->
+    </div>
+    <div class="modal-btns" style="margin-top:20px">
+      <button class="btn btn-cancel" onclick="closeRestoreModal()">取消</button>
+      <button class="btn btn-ok" id="restore-modal-confirm">确认恢复</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal-bg" id="settings-modal">
+  <div class="modal">
+    <h3><span style="opacity:.55;font-size:.88em;margin-right:6px">⚙</span>Google Sheets 同步设置</h3>
+    <label class="settings-label">Apps Script 部署 URL</label>
+    <input id="script-url-input" placeholder="https://script.google.com/macros/s/…/exec"
+      style="margin-bottom:14px">
+    <div class="settings-tip-card">
+      💡 需先在 Google Sheet 中部署 Code.gs 为网络应用（执行身份：我；访问权限：任何人），再将生成的 URL 粘贴至此。
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-cancel" onclick="closeSettingsModal()">取消</button>
+      <button class="btn btn-sync" id="btn-sync-settings" onclick="manualSync()" disabled>立即同步</button>
+      <button class="btn btn-ok" onclick="saveSettings()">保存设置</button>
+    </div>
+    <div class="settings-sync-msg-row">
+      <span id="settings-sync-msg"></span>
+    </div>
+  </div>
+</div>
+
+<!-- Add Firework Modal -->
+<div class="modal-bg" id="add-modal">
+  <div class="modal">
+    <h3><span style="opacity:.7;margin-right:6px">🎆</span>添加烟花</h3>
+    <div class="fw-input-group">
+      <input id="new-fw-name" placeholder="输入烟花名称"
+        oninput="onFwNameInput()"
+        onkeydown="if(event.key==='Enter')confirmAdd()">
+      <div class="fw-error-msg" id="fw-error-msg">此烟花已在记录中</div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-cancel" onclick="closeModal()">取消</button>
+      <button class="btn btn-ok" id="btn-add-ok" onclick="confirmAdd()" disabled>确认添加</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── Data ───────────────────────────────────────────────────────────────────
+const ACCOUNTS = [
+  { id: 1, name: '账号一', chars: ['药姐', '扇姐', '灯娘'] },
+  { id: 2, name: '账号二', chars: ['毒萝', '道姑', '弓娘'] },
+  { id: 3, name: '账号三', chars: ['秀萝', '琴娘', '伞娘'] },
+  { id: 4, name: '账号四', chars: ['花萝', '花姐'] },
+  { id: 5, name: '账号五', chars: ['二小姐', '喵姐', '炮萝'] },
+];
+
+const ALL_CHARS = [];
+const CHAR_ACC = {}; // char -> accountId
+ACCOUNTS.forEach(acc => {
+  acc.chars.forEach(ch => {
+    ALL_CHARS.push(ch);
+    CHAR_ACC[ch] = acc.id;
+  });
+});
+
+function getAccountName(id) { return ACCOUNTS.find(a => a.id === id)?.name || ''; }
+
+// ─── Character icons & colors ─────────────────────────────────────────────────
+const CHAR_STYLE = {
+  '药姐':  { icon: '药宗.png',   color: '#3a8878' },
+  '扇姐':  { icon: '段氏.png',   color: '#aa2028' },
+  '灯娘':  { icon: '衍天宗.png', color: '#7070c0' },
+  '毒萝':  { icon: '五毒.png',   color: '#9080b8' },
+  '道姑':  { icon: '纯阳.png',   color: '#5868a0' },
+  '弓娘':  { icon: '万灵.png',   color: '#a07c28' },
+  '秀萝':  { icon: '七秀.png',   color: '#b07060' },
+  '琴娘':  { icon: '长歌.png',   color: '#4898a8' },
+  '伞娘':  { icon: '蓬莱.png',   color: '#5870a0' },
+  '花萝':  { icon: '万花.png',   color: '#7060a0' },
+  '花姐':  { icon: '万花.png',   color: '#7060a0' },
+  '二小姐':{ icon: '藏剑.png',   color: '#a88040' },
+  '喵姐':  { icon: '明教.png',   color: '#9a3828' },
+  '炮萝':  { icon: '唐门.png',   color: '#3870b0' },
+};
+
+function charDisplay(ch) {
+  const s = CHAR_STYLE[ch];
+  if (!s) return `<span style="color:#5a3018">${esc(ch)}</span>`;
+  return `<span style="color:${s.color};display:inline-flex;align-items:center;gap:5px;white-space:nowrap"><img src="${s.icon}" class="char-icon">${esc(ch)}</span>`;
+}
+
+// ─── State ───────────────────────────────────────────────────────────────────
+let state = {
+  fireworks: ['真橙之心', '海誓山盟'],
+  archived: [],
+  archivedDates: {},
+  achievements: {}
+};
+
+function normalizeState() {
+  if (!state.fireworks) state.fireworks = ['真橙之心', '海誓山盟'];
+  if (!state.archived) state.archived = [];
+  if (!state.archivedDates) state.archivedDates = {};
+  if (!state.achievements) state.achievements = {};
+}
+
+function loadState() {
+  try {
+    const s = localStorage.getItem('jx3_firework_v2');
+    if (s) state = JSON.parse(s);
+  } catch(e) {}
+  normalizeState();
+}
+
+function saveState() {
+  localStorage.setItem('jx3_firework_v2', JSON.stringify(state));
+  scheduleSync();
+}
+
+// ─── Google Sheets sync ───────────────────────────────────────────────────────
+let scriptUrl = localStorage.getItem('jx3_script_url') || '';
+let syncTimer = null;
+
+function setSyncStatus(type, customMsg) {
+  const el = document.getElementById('sync-status');
+  if (!el) return;
+  const msgs  = { idle: '', syncing: '☁ 同步中…', ok: '✓ 已同步', error: '✗ 同步失败' };
+  const colors = { idle: 'transparent', syncing: '#a07c28', ok: '#3a8878', error: '#aa2028' };
+  el.textContent = customMsg ?? msgs[type] ?? '';
+  el.style.color  = colors[type] ?? '#888';
+}
+
+async function loadFromSheet() {
+  if (!scriptUrl) return false;
+  setSyncStatus('syncing');
+  try {
+    const res  = await fetch(scriptUrl);
+    const text = await res.text();
+    const data = text ? JSON.parse(text) : {};
+    if (data && data.fireworks) {
+      // Sheet 有数据，加载云端版本
+      state = data;
+      normalizeState();
+      localStorage.setItem('jx3_firework_v2', JSON.stringify(state));
+      setSyncStatus('ok');
+      return true;
+    } else {
+      // Sheet 为空（首次使用），把本地数据推上去
+      await pushToSheet();
+      return true;
+    }
+  } catch(e) {
+    console.error('loadFromSheet error:', e);
+    setSyncStatus('error');
+    return false;
+  }
+}
+
+function scheduleSync() {
+  if (!scriptUrl) return;
+  setSyncStatus('syncing', '☁ 待同步…');
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(pushToSheet, 1500);
+}
+
+async function pushToSheet() {
+  if (!scriptUrl) return;
+  setSyncStatus('syncing');
+  try {
+    await fetch(scriptUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(state),
+    });
+    setSyncStatus('ok');
+  } catch(e) {
+    setSyncStatus('error');
+  }
+}
+
+// ─── Settings modal ───────────────────────────────────────────────────────────
+function openSettingsModal() {
+  document.getElementById('script-url-input').value = scriptUrl;
+  document.getElementById('settings-sync-msg').textContent = '';
+  document.getElementById('btn-sync-settings').disabled = !scriptUrl;
+  document.getElementById('settings-modal').classList.add('show');
+}
+
+function closeSettingsModal() {
+  document.getElementById('settings-modal').classList.remove('show');
+}
+
+function saveSettings() {
+  scriptUrl = document.getElementById('script-url-input').value.trim();
+  localStorage.setItem('jx3_script_url', scriptUrl);
+  closeSettingsModal();
+  if (scriptUrl) {
+    loadFromSheet().then(ok => { if (ok) { renderRecord(); } });
+  } else {
+    setSyncStatus('idle');
+  }
+}
+
+async function manualSync() {
+  const msg = document.getElementById('settings-sync-msg');
+  if (!scriptUrl) return;
+  msg.textContent = '同步中…'; msg.style.color = '#a07c28';
+  const ok = await loadFromSheet();
+  msg.textContent = ok ? '✓ 同步成功' : '✗ 连接失败，请检查 URL';
+  msg.style.color  = ok ? '#3a8878' : '#aa2028';
+  if (ok) renderRecord();
+}
+
+function getAch(fw, char) {
+  if (!state.achievements[fw]) state.achievements[fw] = {};
+  if (!state.achievements[fw][char]) state.achievements[fw][char] = { give: false, receive: false, quantity: 0 };
+  return state.achievements[fw][char];
+}
+
+// ─── Status ──────────────────────────────────────────────────────────────────
+function getFwStatus(fw) {
+  // returns 'full', 'partial', 'empty'
+  let any = false, all = true;
+  for (const ch of ALL_CHARS) {
+    const a = getAch(fw, ch);
+    if (a.give || a.receive) any = true;
+    if (!a.give || !a.receive) all = false;
+  }
+  if (all) return 'full';
+  if (any) return 'partial';
+  return 'empty';
+}
+
+function isFullyDone(fw) {
+  return ALL_CHARS.every(ch => { const a = getAch(fw, ch); return a.give && a.receive; });
+}
+
+// ─── Tabs ────────────────────────────────────────────────────────────────────
+let currentMainTab = 'record';
+let currentFw = null;
+
+function switchTab(tab) {
+  currentMainTab = tab;
+  document.querySelectorAll('.main-tab').forEach((el, i) => {
+    el.classList.toggle('active', ['record','archive','search','calc'][i] === tab);
+  });
+  document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'record') renderRecord();
+  if (tab === 'archive') renderArchive();
+  if (tab === 'search') { document.getElementById('search-input').value = ''; document.getElementById('search-result').innerHTML = ''; document.getElementById('search-clear').classList.remove('visible'); }
+  if (tab === 'calc') renderCalcSelect();
+}
+
+// ─── Record Tab ──────────────────────────────────────────────────────────────
+function renderRecord() {
+  renderFwBar();
+  if (!currentFw || !state.fireworks.includes(currentFw)) {
+    currentFw = state.fireworks[0] || null;
+  }
+  renderFwContent();
+}
+
+function renderFwBar() {
+  const bar = document.getElementById('fw-bar');
+  // Keep add button
+  const addBtn = bar.querySelector('.btn-add');
+  bar.innerHTML = '';
+  state.fireworks.forEach(fw => {
+    const status = getFwStatus(fw);
+    const archived = state.archived.includes(fw);
+    const dotClass = archived ? 'dot-full' : (status === 'full' ? 'dot-full' : status === 'partial' ? 'dot-partial' : 'dot-empty');
+    const pill = document.createElement('div');
+    pill.className = 'fw-pill' + (fw === currentFw ? ' active' : '') + (archived ? ' is-archived' : '');
+    const doneTag = (archived || status === 'full') ? `<span style="color:#4CAF72;font-size:11px;font-weight:700;margin-left:2px">✓</span>` : '';
+    pill.innerHTML = `<span class="dot ${dotClass}"></span>${fw}${doneTag}`;
+    pill.onclick = () => { currentFw = fw; renderRecord(); };
+    bar.appendChild(pill);
+  });
+  bar.appendChild(addBtn);
+}
+
+function renderFwContent() {
+  const el = document.getElementById('fw-content');
+  if (!currentFw) { el.innerHTML = '<div class="empty-msg">请先添加烟花</div>'; return; }
+  const fw = currentFw;
+  const archived = state.archived.includes(fw);
+  const status = getFwStatus(fw);
+
+  let archiveBtn = '';
+  if (!archived && status === 'full') {
+    archiveBtn = `<button class="btn btn-archive btn-archive-pulse" onclick="archiveFw('${esc(fw)}')">✓ 存档此烟花</button>`;
+  }
+  const archivedBadge = archived ? '<span style="color:#2A7A3A;font-size:13px;font-weight:bold">✓ 已存档</span>' : '';
+  const allDone = isFullyDone(fw);
+  const delStyle = allDone ? 'opacity:.4' : '';
+
+  let html = `<div class="fw-section${allDone ? ' fw-complete' : ''}">
+    <div class="fw-section-header">
+      <span class="fw-section-title">${esc(fw)}</span>
+      <div class="header-actions">
+        ${archivedBadge}
+        ${archiveBtn}
+        <button class="btn btn-del" style="${delStyle}" onclick="deleteFw('${esc(fw)}')">删除烟花</button>
+      </div>
+    </div>
+    <table>
+      <thead><tr>
+        <th>账号</th><th>角色</th>
+        <th>放烟花<br><small style="color:#999">(给他人)</small></th>
+        <th>被放烟花<br><small style="color:#999">(他人给我)</small></th>
+        <th>拥有数量</th>
+      </tr></thead>
+      <tbody>`;
+
+  ACCOUNTS.forEach(acc => {
+    html += `<tr class="acc-sep" data-acc="${acc.id}"><td colspan="5">▸ ${acc.name}</td></tr>`;
+    acc.chars.forEach(ch => {
+      const a = getAch(fw, ch);
+      html += `<tr>
+        <td></td>
+        <td class="char-name">${charDisplay(ch)}</td>
+        <td><span class="chk ${a.give?'on':'off'}" onclick="toggleAch('${esc(fw)}','${esc(ch)}','give')" title="点击切换">${a.give?'✔':'○'}</span></td>
+        <td><span class="chk ${a.receive?'on':'off'}" onclick="toggleAch('${esc(fw)}','${esc(ch)}','receive')" title="点击切换">${a.receive?'✔':'○'}</span></td>
+        <td>
+          <div class="qty-wrap">
+            <button class="qty-btn" onclick="changeQty('${esc(fw)}','${esc(ch)}',-1)">−</button>
+            <span class="qty-val">${a.quantity}</span>
+            <button class="qty-btn" onclick="changeQty('${esc(fw)}','${esc(ch)}',1)">＋</button>
+          </div>
+        </td>
+      </tr>`;
+    });
+  });
+
+  html += '</tbody></table></div>';
+  el.innerHTML = html;
+}
+
+function toggleAch(fw, ch, field) {
+  const a = getAch(fw, ch);
+  a[field] = !a[field];
+  // Check if newly fully complete → prompt archive
+  if (isFullyDone(fw) && !state.archived.includes(fw)) {
+    saveState();
+    renderFwContent();
+    renderFwBar();
+    if (confirm(`烟花「${fw}」所有角色成就已全部完成！是否立即存档？`)) {
+      archiveFw(fw);
+    }
+    return;
+  }
+  // If archived and now incomplete, un-archive
+  if (state.archived.includes(fw) && !isFullyDone(fw)) {
+    state.archived = state.archived.filter(f => f !== fw);
+    delete state.archivedDates[fw];
+  }
+  saveState();
+  renderFwContent();
+  renderFwBar();
+}
+
+function changeQty(fw, ch, delta) {
+  const a = getAch(fw, ch);
+  a.quantity = Math.max(0, (a.quantity || 0) + delta);
+  saveState();
+  renderFwContent();
+}
+
+function archiveFw(fw) {
+  if (!state.archived.includes(fw)) {
+    pushHistory(`存档「${fw}」前`);
+    state.archived.push(fw);
+    state.archivedDates[fw] = new Date().toLocaleDateString('zh-CN');
+    addLog(`📦 存档烟花「${fw}」`);
+  }
+  saveState();
+  renderFwBar();
+  renderFwContent();
+}
+
+function deleteFw(fw) {
+  // Soft-delete: save pre-delete snapshot for undo
+  const preDel = JSON.stringify(state);
+  state.fireworks = state.fireworks.filter(f => f !== fw);
+  state.archived = state.archived.filter(f => f !== fw);
+  delete state.archivedDates[fw];
+  delete state.achievements[fw];
+  if (currentFw === fw) currentFw = state.fireworks[0] || null;
+  addLog(`🗑 删除烟花「${fw}」`);
+  saveState();
+  renderRecord();
+  // Show toast with undo option (override snap to pre-delete)
+  showToast(fw);
+  deleteUndo = { fw, snap: preDel };
+}
+
+// ─── Archive Tab ─────────────────────────────────────────────────────────────
+function renderArchive() {
+  const el = document.getElementById('archive-content');
+  let html = '';
+
+  if (state.archived.length === 0) {
+    html += `<div class="empty-archive">
+      <div class="empty-archive-icon">🗄️</div>
+      <div class="empty-archive-text">
+        目前还没有存档记录。<br>
+        去 <a onclick="switchTab('record')">成就记录</a> 里完成一个烟花成就，<br>
+        系统会提示你存档～
+      </div>
+    </div>`;
+  } else {
+    html += '<div class="archive-grid">';
+    state.archived.forEach(fw => {
+      const date = state.archivedDates[fw] || '未知';
+      html += `<div class="archive-card">
+        <div class="ac-progress"><div class="ac-progress-fill" style="width:100%"></div></div>
+        <div class="ac-name">🎆 ${esc(fw)}</div>
+        <div class="ac-date">存档于 ${date}</div>
+        <div class="ac-chars">全部 ${ALL_CHARS.length} 个角色成就完成 ✓</div>
+        <button class="btn-unarchive" onclick="openUnarchivePopover('${esc(fw)}',this)">取消存档</button>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  // History snapshots section
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch(e) {}
+  if (history.length > 0) {
+    html += `<div class="history-section">
+      <div class="history-section-head">
+        <span class="history-title">历史快照</span>
+        <span class="history-hint">
+          <i class="history-hint-icon">!</i>
+          <span class="history-hint-tip">系统仅保留最近 10 次快照，更旧的版本会被自动覆盖。快照在每次存档操作前自动生成。</span>
+        </span>
+      </div>
+      <div class="history-list">`;
+    history.forEach((h, i) => {
+      // Split timestamp into date + time for display
+      const tsParts = h.ts.split(' ');
+      const tsDate = tsParts[0] || h.ts;
+      const tsTime = tsParts[1] || '';
+      html += `<div class="history-item">
+        <div class="history-item-info">
+          <span class="history-ts"><b>${tsTime}</b>　<span style="color:var(--text-3);font-weight:400">${tsDate}</span></span>
+          <span class="history-label">${esc(h.label)}</span>
+        </div>
+        <button class="btn-restore" onclick="openRestoreModal(${i})">恢复此版本</button>
+      </div>`;
+    });
+    html += '</div></div>';
+  }
+
+  el.innerHTML = html;
+}
+
+let _popUnarchiveFw = null;
+
+function openUnarchivePopover(fw, btn) {
+  _popUnarchiveFw = fw;
+  document.getElementById('pop-unarchive-title').textContent = `取消「${fw}」的存档？`;
+  document.getElementById('pop-unarchive-ok').onclick = doUnarchive;
+  const pop = document.getElementById('popover-unarchive');
+  pop.classList.add('show');
+  // Position: horizontally centered on button, arrow points down to button
+  const rect = btn.getBoundingClientRect();
+  const popW = 248;
+  let left = rect.left + rect.width / 2 - popW / 2;
+  left = Math.max(12, Math.min(left, window.innerWidth - popW - 12));
+  pop.style.left = left + 'px';
+  pop.style.top = (rect.top + window.scrollY - 8) + 'px';
+  // Shift arrow to align with button center relative to popover
+  const arrowOffset = (rect.left + rect.width / 2) - left;
+  const clampedArrow = Math.max(20, Math.min(arrowOffset, popW - 20));
+  pop.style.setProperty('--arrow-left', clampedArrow + 'px');
+}
+
+function closeUnarchivePopover() {
+  document.getElementById('popover-unarchive').classList.remove('show');
+  _popUnarchiveFw = null;
+}
+
+function doUnarchive() {
+  const fw = _popUnarchiveFw;
+  if (!fw) return;
+  closeUnarchivePopover();
+  state.archived = state.archived.filter(f => f !== fw);
+  delete state.archivedDates[fw];
+  addLog(`📤 取消存档「${fw}」`);
+  saveState();
+  renderArchive();
+}
+
+// Direct unarchive (no popover) — kept for programmatic use
+function unarchiveFw(fw) {
+  state.archived = state.archived.filter(f => f !== fw);
+  delete state.archivedDates[fw];
+  addLog(`📤 取消存档「${fw}」`);
+  saveState();
+  renderArchive();
+}
+
+let _restoreIndex = -1;
+
+function openRestoreModal(index) {
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch(e) {}
+  const h = history[index];
+  if (!h) return;
+  _restoreIndex = index;
+  const tsParts = h.ts.split(' ');
+  const tsDate = tsParts[0] || '';
+  const tsTime = tsParts[1] || h.ts;
+  document.getElementById('restore-modal-body').innerHTML =
+    `<p style="color:var(--text-2);font-size:15px;line-height:1.7">
+       确定要恢复到 <b style="color:var(--text);font-size:16px">${tsTime}</b>
+       <span style="color:var(--text-3);font-size:13px"> · ${tsDate}</span>
+       保存的版本吗？
+     </p>
+     <p style="color:#999;font-size:12px;margin-top:6px">「${esc(h.label)}」</p>
+     <div class="restore-warn">⚠ 当前未保存的修改将会被覆盖，且无法取消。</div>`;
+  document.getElementById('restore-modal-confirm').onclick = () => doRestoreSnapshot(index);
+  document.getElementById('restore-modal').classList.add('show');
+}
+
+function closeRestoreModal() {
+  document.getElementById('restore-modal').classList.remove('show');
+  _restoreIndex = -1;
+}
+
+function doRestoreSnapshot(index) {
+  closeRestoreModal();
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch(e) {}
+  const h = history[index];
+  if (!h) return;
+  try {
+    pushHistory('恢复操作前备份');
+    state = JSON.parse(h.snap);
+    normalizeState();
+    saveState();
+    addLog(`↩ 恢复快照「${h.label}」`);
+    renderRecord();
+    renderArchive();
+  } catch(e) { alert('恢复失败，快照数据损坏。'); }
+}
+
+// keep old name for backward compat
+function restoreSnapshot(index) { openRestoreModal(index); }
+
+// ─── Search Tab ──────────────────────────────────────────────────────────────
+function onSearchInput() {
+  const val = document.getElementById('search-input').value;
+  document.getElementById('search-clear').classList.toggle('visible', val.length > 0);
+  doSearch();
+}
+
+function clearSearch() {
+  const input = document.getElementById('search-input');
+  input.value = '';
+  input.focus();
+  document.getElementById('search-clear').classList.remove('visible');
+  document.getElementById('search-result').innerHTML = '';
+}
+
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1,3), 16);
+  const g = parseInt(hex.slice(3,5), 16);
+  const b = parseInt(hex.slice(5,7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function doSearch() {
+  const q = document.getElementById('search-input').value.trim();
+  const el = document.getElementById('search-result');
+  if (!q) { el.innerHTML = ''; return; }
+
+  const fw = state.fireworks.find(f => f === q) || state.fireworks.find(f => f.includes(q));
+  if (!fw) {
+    el.innerHTML = `<div class="search-result"><div class="sr-header"><span class="sr-badge sr-notfound">未找到</span></div><p style="color:#aaa;font-size:13px;margin-top:4px">没有找到名为「${esc(q)}」的烟花记录</p></div>`;
+    return;
+  }
+
+  // 计算进度
+  let doneCount = 0;
+  ALL_CHARS.forEach(ch => { const a = getAch(fw, ch); if (a.give) doneCount++; if (a.receive) doneCount++; });
+  const totalCount = ALL_CHARS.length * 2;
+  const pct = Math.round(doneCount / totalCount * 100);
+  const fillColor = pct === 100
+    ? 'linear-gradient(90deg,#4CAF72,#A8C830)'   // 全满 → 金绿
+    : pct === 0
+    ? '#E0D8CC'                                    // 全空 → 浅灰
+    : 'linear-gradient(90deg,var(--primary),var(--gold))'; // 部分 → 胭脂→金
+  const progressBar = `<div class="sr-progress-wrap">
+    <div class="sr-progress-meta">
+      <span class="sr-progress-label">成就进度</span>
+      <span class="sr-progress-count">${doneCount} / ${totalCount}</span>
+    </div>
+    <div class="sr-progress-bar"><div class="sr-progress-fill" style="width:${pct}%;background:${fillColor}"></div></div>
+  </div>`;
+
+  if (state.archived.includes(fw)) {
+    el.innerHTML = `<div class="search-result"><div class="sr-header"><span class="sr-badge sr-archived">✓ 已存档</span></div>${progressBar}<p style="color:var(--text-2);font-size:13px">所有角色成就均已完成，存档于 ${state.archivedDates[fw] || '未知'}。</p></div>`;
+    return;
+  }
+
+  const incomplete = [];
+  ALL_CHARS.forEach(ch => {
+    const a = getAch(fw, ch);
+    if (!a.give || !a.receive)
+      incomplete.push({ ch, accName: getAccountName(CHAR_ACC[ch]), needsGive: !a.give, needsReceive: !a.receive });
+  });
+
+  if (incomplete.length === 0) {
+    el.innerHTML = `<div class="search-result"><div class="sr-header"><span class="sr-badge sr-archived">✓ 全部完成</span></div>${progressBar}<p style="color:var(--text-2);font-size:13px;margin-top:14px">所有角色成就已完成。<span style="color:#C07820;font-weight:600">（尚未存档，记得去存个档！）</span></p></div>`;
+    return;
+  }
+
+  const badge = doneCount === 0
+    ? `<span class="sr-badge sr-none">尚未开始</span>`
+    : `<span class="sr-badge sr-partial">部分完成</span>`;
+
+  let tags = '';
+  incomplete.forEach(({ ch, accName, needsGive, needsReceive }) => {
+    const s = CHAR_STYLE[ch] || {};
+    const bg = s.color ? hexToRgba(s.color, 0.09) : 'rgba(168,132,98,.06)';
+    tags += `<div class="sr-tag" style="background:${bg}" title="${accName}">
+      ${s.icon ? `<img src="${s.icon}" class="sr-tag-sect">` : ''}
+      <div class="sr-tag-body">
+        <span class="sr-tag-name" style="color:${s.color||'#555'}">${esc(ch)}</span>
+        <div class="sr-tag-indicators">
+          <span class="sr-ti ${needsGive   ? 'sr-ti-give-miss' : 'sr-ti-give-done'}">放</span>
+          <span class="sr-ti ${needsReceive ? 'sr-ti-recv-miss' : 'sr-ti-recv-done'}">收</span>
+        </div>
+      </div>
+    </div>`;
+  });
+
+  el.innerHTML = `<div class="search-result">
+    <div class="sr-header">${badge}</div>
+    ${progressBar}
+    <p class="sr-incomplete-title">以下角色尚未完成全部成就</p>
+    <div class="sr-tag-grid">${tags}</div>
+  </div>`;
+}
+
+// ─── Calc Tab ────────────────────────────────────────────────────────────────
+let _selectedFw = '';
+
+function renderCalcSelect() {
+  // If previously selected firework was removed, clear selection
+  if (_selectedFw && !state.fireworks.includes(_selectedFw)) {
+    _selectedFw = '';
+    _updateFwTrigger();
+    document.getElementById('btn-calc').disabled = true;
+    document.getElementById('calc-btn-wrap').classList.add('show-tip');
+  }
+  _rebuildFwDropdown();
+}
+
+function _rebuildFwDropdown() {
+  const dropdown = document.getElementById('fw-select-dropdown');
+  if (!dropdown) return;
+  dropdown.innerHTML = state.fireworks.map(fw => {
+    const isArchived = state.archived.includes(fw);
+    const badge = isArchived ? '<span class="fw-opt-badge">📦 已存档</span>' : '';
+    const sel = fw === _selectedFw ? ' selected' : '';
+    return `<div class="fw-select-opt${sel}" data-fw="${esc(fw)}"><span class="fw-opt-name">${esc(fw)}</span>${badge}</div>`;
+  }).join('') || '<div style="padding:12px 14px;font-size:13px;color:var(--text-3)">暂无烟花记录</div>';
+}
+
+function _updateFwTrigger() {
+  const trigger = document.getElementById('fw-select-trigger');
+  const valueEl = document.getElementById('fw-select-value');
+  if (_selectedFw) {
+    const badge = state.archived.includes(_selectedFw)
+      ? ' <span class="fw-opt-badge">📦 已存档</span>' : '';
+    valueEl.innerHTML = esc(_selectedFw) + badge;
+    trigger.classList.remove('no-selection');
+    trigger.classList.add('has-selection');
+  } else {
+    valueEl.textContent = '请选择要计算的烟花…';
+    trigger.classList.add('no-selection');
+    trigger.classList.remove('has-selection');
+  }
+}
+
+function toggleFwDropdown() {
+  const wrap = document.getElementById('fw-select-wrap');
+  if (wrap.classList.contains('open')) {
+    closeFwDropdown();
+  } else {
+    _rebuildFwDropdown();
+    wrap.classList.add('open');
+  }
+}
+
+function closeFwDropdown() {
+  document.getElementById('fw-select-wrap').classList.remove('open');
+}
+
+// Delegated click handler for dropdown options (added once at bottom of script)
+
+let calcSessChecked = {};        // index → bool
+let calcPriorityExcludes = new Set();  // chars excluded from priority (non-priority set)
+
+function toggleCharPriority(char) {
+  if (calcPriorityExcludes.has(char)) {
+    calcPriorityExcludes.delete(char);
+  } else {
+    calcPriorityExcludes.add(char);
+  }
+  doCalc();
+}
+
+function doCalc() {
+  const fw = _selectedFw;
+  if (!fw) return;
+  calcSessChecked = {};
+  const result = calculateStrategy(fw, calcPriorityExcludes);
+  renderCalcResult(fw, result);
+}
+
+
+function toggleSessCheck(idx) {
+  calcSessChecked[idx] = !calcSessChecked[idx];
+  const card = document.getElementById('sess-card-' + idx);
+  const chk  = document.getElementById('sess-chk-' + idx);
+  if (card) card.classList.toggle('sess-done', !!calcSessChecked[idx]);
+  if (chk)  chk.checked = !!calcSessChecked[idx];
+}
+
+function calculateStrategy(fw, priorityExcludes = new Set()) {
+  const allCharInfo = [];
+  ACCOUNTS.forEach(acc => acc.chars.forEach(ch => allCharInfo.push({ char: ch, accountId: acc.id })));
+
+  const needs = {};
+  allCharInfo.forEach(({ char, accountId }) => {
+    const a = getAch(fw, char);
+    if (!a.give || !a.receive) {
+      needs[char] = { char, accountId, needsGive: !a.give, needsReceive: !a.receive };
+    }
+  });
+
+  const needsList = Object.values(needs);
+  if (needsList.length === 0) return { complete: true };
+
+  const priorityNeeds    = needsList.filter(c => !priorityExcludes.has(c.char));
+  const nonPriorityNeeds = needsList.filter(c =>  priorityExcludes.has(c.char));
+
+  // ── Phase A: run core algorithm for priority chars ────────────────────────
+  const needsBoth = priorityNeeds.filter(c => c.needsGive && c.needsReceive);
+  const needsOnlyGive = priorityNeeds.filter(c => c.needsGive && !c.needsReceive);
+  const needsOnlyReceive = priorityNeeds.filter(c => !c.needsGive && c.needsReceive);
+
+  // Round-robin interleave by account
+  {
+    const byAcc = {};
+    needsBoth.forEach(c => { (byAcc[c.accountId] = byAcc[c.accountId] || []).push(c); });
+    const queues = Object.values(byAcc).sort((a, b) => a.length - b.length);
+    const interleaved = [];
+    let anyLeft = true;
+    while (anyLeft) {
+      anyLeft = false;
+      for (const q of queues) {
+        if (q.length > 0) { interleaved.push(q.shift()); anyLeft = true; }
+      }
+    }
+    needsBoth.splice(0, needsBoth.length, ...interleaved);
+  }
+
+  // Phase 0: three-way cycle for odd-count needsBoth
+  let cycleTriple = null;
+  if (needsBoth.length % 2 === 1 && needsBoth.length >= 3) {
+    let ki = -1, ji = -1, ii = -1;
+    outer: for (let i = needsBoth.length - 1; i >= 2; i--) {
+      for (let j = i - 1; j >= 1; j--) {
+        for (let k = j - 1; k >= 0; k--) {
+          if (needsBoth[i].accountId !== needsBoth[j].accountId &&
+              needsBoth[j].accountId !== needsBoth[k].accountId &&
+              needsBoth[i].accountId !== needsBoth[k].accountId) {
+            ii = i; ji = j; ki = k; break outer;
+          }
+        }
+      }
+    }
+    if (ii !== -1) {
+      cycleTriple = [needsBoth[ki], needsBoth[ji], needsBoth[ii]];
+      needsBoth.splice(ii, 1); needsBoth.splice(ji, 1); needsBoth.splice(ki, 1);
+    }
+  }
+
+  const interactions = [];
+  const doneGive = new Set();
+  const doneReceive = new Set();
+
+  // Phase 1: mutual pairs
+  const usedBoth = new Set();
+  for (let i = 0; i < needsBoth.length; i++) {
+    const a = needsBoth[i];
+    if (usedBoth.has(a.char)) continue;
+    for (let j = i + 1; j < needsBoth.length; j++) {
+      const b = needsBoth[j];
+      if (usedBoth.has(b.char) || b.accountId === a.accountId) continue;
+      interactions.push({ giver: a.char, giverAcc: a.accountId, receiver: b.char, receiverAcc: b.accountId, mutual: true, partnerId: interactions.length + 1 });
+      interactions.push({ giver: b.char, giverAcc: b.accountId, receiver: a.char, receiverAcc: a.accountId, mutual: true, partnerId: interactions.length - 1 });
+      usedBoth.add(a.char); usedBoth.add(b.char);
+      doneGive.add(a.char); doneGive.add(b.char);
+      doneReceive.add(a.char); doneReceive.add(b.char);
+      break;
+    }
+  }
+
+  // Add cycle interactions
+  if (cycleTriple) {
+    const [a, b, c] = cycleTriple;
+    interactions.push({ giver: a.char, giverAcc: a.accountId, receiver: b.char, receiverAcc: b.accountId, cycle: true, cycleSeq: 1 });
+    interactions.push({ giver: b.char, giverAcc: b.accountId, receiver: c.char, receiverAcc: c.accountId, cycle: true, cycleSeq: 2 });
+    interactions.push({ giver: c.char, giverAcc: c.accountId, receiver: a.char, receiverAcc: a.accountId, cycle: true, cycleSeq: 3 });
+    doneGive.add(a.char); doneGive.add(b.char); doneGive.add(c.char);
+    doneReceive.add(a.char); doneReceive.add(b.char); doneReceive.add(c.char);
+  }
+
+  const unmatchedBoth = needsBoth.filter(c => !usedBoth.has(c.char));
+  const givers    = [...needsOnlyGive,    ...unmatchedBoth].filter(c => !doneGive.has(c.char));
+  const receivers = [...needsOnlyReceive, ...unmatchedBoth].filter(c => !doneReceive.has(c.char));
+
+  // Phase 2: givers — non-priority chars preferred as dummy receivers (木桩)
+  const usedReceiversP2 = new Set([...doneReceive]);
+  const usedGiversP2    = new Set([...doneGive]);
+
+  for (const giver of givers) {
+    if (usedGiversP2.has(giver.char)) continue;
+    let receiver = receivers.find(r => !usedReceiversP2.has(r.char) && r.accountId !== giver.accountId && r.needsGive);
+    if (!receiver) receiver = receivers.find(r => !usedReceiversP2.has(r.char) && r.accountId !== giver.accountId);
+    if (!receiver) {
+      // prefer non-priority chars as dummy receivers (save priority chars for real use)
+      const any = allCharInfo
+        .filter(c => c.accountId !== giver.accountId && !usedGiversP2.has(c.char))
+        .sort((a, b) => {
+          const aNP = priorityExcludes.has(a.char) ? 0 : 1;
+          const bNP = priorityExcludes.has(b.char) ? 0 : 1;
+          if (aNP !== bNP) return aNP - bNP;
+          return (getAch(fw, b.char).quantity || 0) - (getAch(fw, a.char).quantity || 0);
+        })[0];
+      if (any) receiver = { ...any, needsReceive: false, _dummy: true };
+    }
+    if (receiver) {
+      interactions.push({ giver: giver.char, giverAcc: giver.accountId, receiver: receiver.char, receiverAcc: receiver.accountId, receiverDummy: receiver._dummy });
+      usedGiversP2.add(giver.char);
+      if (!receiver._dummy) usedReceiversP2.add(receiver.char);
+    }
+  }
+
+  // Phase 3: receivers — prefer non-priority chars with inventory as dummy givers (free donation)
+  const usedGiversP3 = new Set([...usedGiversP2]);
+  for (const receiver of receivers) {
+    if (usedReceiversP2.has(receiver.char)) continue;
+    let giver = givers.find(g => !usedGiversP3.has(g.char) && g.accountId !== receiver.accountId);
+    if (!giver) {
+      const any = allCharInfo
+        .filter(c => c.accountId !== receiver.accountId)
+        .sort((a, b) => {
+          const aNP = priorityExcludes.has(a.char) ? 0 : 1;
+          const bNP = priorityExcludes.has(b.char) ? 0 : 1;
+          if (aNP !== bNP) return bNP - aNP;  // non-priority first as givers (free donation!)
+          return (getAch(fw, b.char).quantity || 0) - (getAch(fw, a.char).quantity || 0);
+        })[0];
+      if (any) giver = { ...any, _dummy: true };
+    }
+    if (giver) {
+      interactions.push({ giver: giver.char, giverAcc: giver.accountId, receiver: receiver.char, receiverAcc: receiver.accountId, giverDummy: giver._dummy });
+      usedReceiversP2.add(receiver.char);
+      if (!giver._dummy) usedGiversP3.add(giver.char);
+    }
+  }
+
+  // Snapshot Phase A length and compute Phase A completion
+  const phaseALength = interactions.length;
+  const phaseADoneGive    = new Set();
+  const phaseADoneReceive = new Set();
+  for (let i = 0; i < phaseALength; i++) {
+    const ix = interactions[i];
+    if (!ix.giverDummy)    phaseADoneGive.add(ix.giver);
+    if (!ix.receiverDummy) phaseADoneReceive.add(ix.receiver);
+  }
+
+  // ── Phase B: use remaining inventory for non-priority chars ──────────────
+  const phaseBDoneGive    = new Set();
+  const phaseBDoneReceive = new Set();
+
+  if (nonPriorityNeeds.length > 0) {
+    const phaseAUsage = {};
+    for (let i = 0; i < phaseALength; i++) {
+      const ix = interactions[i];
+      phaseAUsage[ix.giver] = (phaseAUsage[ix.giver] || 0) + 1;
+    }
+    const remaining = {};
+    allCharInfo.forEach(({ char }) => {
+      const qty = getAch(fw, char).quantity || 0;
+      remaining[char] = Math.max(0, qty - (phaseAUsage[char] || 0));
+    });
+    const totalRemaining = Object.values(remaining).reduce((a, b) => a + b, 0);
+
+    if (totalRemaining > 0) {
+      const bNeedsBoth       = nonPriorityNeeds.filter(c => c.needsGive && c.needsReceive);
+      const bNeedsOnlyGive   = nonPriorityNeeds.filter(c => c.needsGive && !c.needsReceive);
+      const bNeedsOnlyReceive= nonPriorityNeeds.filter(c => !c.needsGive && c.needsReceive);
+      const usedBothB = new Set();
+
+      // Mutual pairs within non-priority (both must have remaining inventory)
+      for (let i = 0; i < bNeedsBoth.length; i++) {
+        const a = bNeedsBoth[i];
+        if (usedBothB.has(a.char) || remaining[a.char] <= 0) continue;
+        for (let j = i + 1; j < bNeedsBoth.length; j++) {
+          const b = bNeedsBoth[j];
+          if (usedBothB.has(b.char) || b.accountId === a.accountId || remaining[b.char] <= 0) continue;
+          interactions.push({ giver: a.char, giverAcc: a.accountId, receiver: b.char, receiverAcc: b.accountId, mutual: true, phaseB: true });
+          interactions.push({ giver: b.char, giverAcc: b.accountId, receiver: a.char, receiverAcc: a.accountId, mutual: true, phaseB: true });
+          remaining[a.char]--; remaining[b.char]--;
+          usedBothB.add(a.char); usedBothB.add(b.char);
+          phaseBDoneGive.add(a.char); phaseBDoneGive.add(b.char);
+          phaseBDoneReceive.add(a.char); phaseBDoneReceive.add(b.char);
+          break;
+        }
+      }
+
+      // Non-priority needsGive (and unmatched needsBoth give side)
+      for (const g of [...bNeedsOnlyGive, ...bNeedsBoth.filter(c => !usedBothB.has(c.char))]) {
+        if (phaseBDoneGive.has(g.char) || remaining[g.char] <= 0) continue;
+        const recv = allCharInfo.find(c => c.accountId !== g.accountId);
+        if (!recv) continue;
+        interactions.push({ giver: g.char, giverAcc: g.accountId, receiver: recv.char, receiverAcc: recv.accountId, phaseB: true, receiverDummy: true });
+        remaining[g.char]--;
+        phaseBDoneGive.add(g.char);
+      }
+
+      // Non-priority needsReceive (and unmatched needsBoth receive side): find any remaining giver
+      for (const r of [...bNeedsOnlyReceive, ...bNeedsBoth.filter(c => !usedBothB.has(c.char) && !phaseBDoneReceive.has(c.char))]) {
+        if (phaseBDoneReceive.has(r.char)) continue;
+        const giver = allCharInfo
+          .filter(c => c.accountId !== r.accountId && remaining[c.char] > 0)
+          .sort((a, b) => (remaining[b.char] || 0) - (remaining[a.char] || 0))[0];
+        if (!giver) continue;
+        const giverIsNonPri = nonPriorityNeeds.some(c => c.char === giver.char);
+        interactions.push({ giver: giver.char, giverAcc: giver.accountId, receiver: r.char, receiverAcc: r.accountId, phaseB: true, giverIsLent: !giverIsNonPri });
+        remaining[giver.char]--;
+        phaseBDoneReceive.add(r.char);
+        if (giverIsNonPri) phaseBDoneGive.add(giver.char);
+      }
+    }
+  }
+
+  // Group by account pair (Phase A and B get separate session buckets)
+  const sessionMap = new Map();
+  for (const ix of interactions) {
+    const [a1, a2] = [ix.giverAcc, ix.receiverAcc].sort((a, b) => a - b);
+    const key = `${a1}-${a2}-${ix.phaseB ? 'B' : 'A'}`;
+    if (!sessionMap.has(key)) sessionMap.set(key, { acc1: a1, acc2: a2, interactions: [], phase: ix.phaseB ? 'B' : 'A' });
+    sessionMap.get(key).interactions.push(ix);
+  }
+
+  const sessionsA = orderSessions([...sessionMap.values()].filter(s => s.phase === 'A'));
+  const sessionsB = orderSessions([...sessionMap.values()].filter(s => s.phase === 'B'));
+  const ordered   = [...sessionsA, ...sessionsB];
+
+  // Completion counts
+  const priorityComplete    = priorityNeeds.filter(c =>
+    (!c.needsGive    || phaseADoneGive.has(c.char)) &&
+    (!c.needsReceive || phaseADoneReceive.has(c.char))
+  ).length;
+  const nonPriorityComplete = nonPriorityNeeds.filter(c =>
+    (!c.needsGive    || phaseBDoneGive.has(c.char)    || phaseADoneGive.has(c.char)) &&
+    (!c.needsReceive || phaseBDoneReceive.has(c.char) || phaseADoneReceive.has(c.char))
+  ).length;
+
+  return {
+    complete: false,
+    sessions: ordered,
+    needs: needsList,
+    hasCycle: !!cycleTriple,
+    priorityNeeds,
+    nonPriorityNeeds,
+    priorityComplete,
+    nonPriorityComplete,
+  };
+}
+
+function orderSessions(sessions) {
+  if (sessions.length <= 1) return sessions;
+  const result = [sessions[0]];
+  const rem = sessions.slice(1);
+  while (rem.length) {
+    const last = result[result.length - 1];
+    const idx = rem.findIndex(s => s.acc1 === last.acc1 || s.acc1 === last.acc2 || s.acc2 === last.acc1 || s.acc2 === last.acc2);
+    if (idx >= 0) { result.push(rem[idx]); rem.splice(idx, 1); }
+    else { result.push(rem[0]); rem.splice(0, 1); }
+  }
+  return result;
+}
+
+function calcCost(fw, sessions) {
+  // ALL givers (real or dummy) physically fire a firework — count every action.
+  // Sessions are processed in display order so depletion is sequential.
+  const usageCount = {};
+  sessions.forEach(sess => {
+    sess.interactions.forEach(ix => {
+      usageCount[ix.giver] = (usageCount[ix.giver] || 0) + 1;
+    });
+  });
+  // For each giver, first N actions are covered by inventory; the rest need purchase.
+  const inventoryCoverage = {};   // char → how many of their actions are covered
+  const giversNeedToBuy = new Set();
+  let totalConsumed = 0, coveredByInventory = 0, needToBuy = 0;
+  Object.entries(usageCount).forEach(([char, count]) => {
+    totalConsumed += count;
+    const qty = getAch(fw, char).quantity || 0;
+    const covered = Math.min(qty, count);
+    inventoryCoverage[char] = covered;
+    coveredByInventory += covered;
+    const buy = count - covered;
+    if (buy > 0) { needToBuy += buy; giversNeedToBuy.add(char); }
+  });
+  return { totalConsumed, coveredByInventory, needToBuy, giversNeedToBuy, inventoryCoverage };
+}
+
+function renderCalcResult(fw, result) {
+  const el = document.getElementById('calc-result');
+  if (result.complete) {
+    el.innerHTML = '<div class="all-done">✔ 该烟花所有角色成就均已完成！</div>';
+    return;
+  }
+
+  // Pre-calculate total switch count so we can show the summary bar first
+  let switchCount = 0;
+  result.sessions.forEach((sess, idx) => {
+    if (idx > 0) {
+      const prev = result.sessions[idx - 1];
+      const prevSet = new Set([prev.acc1, prev.acc2]);
+      switchCount += [sess.acc1, sess.acc2].filter(a => !prevSet.has(a)).length;
+    }
+  });
+  const totalSessions = result.sessions.length;
+
+  // ── Cost calculation ─────────────────────────────────────────────────────
+  const cost = calcCost(fw, result.sessions);
+
+  // ── Summary bar ──────────────────────────────────────────────────────────
+  const hasNP = result.nonPriorityNeeds && result.nonPriorityNeeds.length > 0;
+  const summaryBar = `<div class="calc-summary">
+    <span class="calc-summary-label">最优方案</span>
+    <span class="calc-badge calc-badge-sessions">🔄 ${totalSessions} 轮换号</span>
+    <span class="calc-badge calc-badge-switches">⇄ ${switchCount} 次切换</span>
+    ${switchCount === 0 ? '<span class="calc-badge calc-badge-done">✓ 无需切换</span>' : ''}
+    ${result.hasCycle ? '<span class="calc-badge" style="background:#EDF3FB;border-color:#8AAED4;color:#1A4070">↻ 含三方循环</span>' : ''}
+    ${hasNP ? `<span class="calc-badge" style="background:#E4F5EA;border-color:#8AC4A0;color:#2A7A3A">⭐ 核心 ${result.priorityComplete}/${result.priorityNeeds.length}</span>` : ''}
+    ${hasNP ? `<span class="calc-badge" style="background:#EDF3FB;border-color:#8AAED4;color:#1A4070">◎ 非核心 ${result.nonPriorityComplete}/${result.nonPriorityNeeds.length}</span>` : ''}
+  </div>`;
+
+  // ── Cost bar ─────────────────────────────────────────────────────────────
+  const costBar = cost.totalConsumed > 0 ? `<div class="cost-bar">
+    <span class="cost-label">💊 本次共消耗 <b>${cost.totalConsumed}</b> 个「${esc(fw)}」</span>
+    ${cost.coveredByInventory > 0 ? `<span class="cost-badge cost-covered">🎒 库存可抵 ${cost.coveredByInventory} 个</span>` : ''}
+    ${cost.needToBuy > 0
+      ? `<span class="cost-badge cost-buy">🛒 需额外购买 ${cost.needToBuy} 个</span>`
+      : '<span class="cost-badge cost-done">✓ 库存充足，无需购买</span>'}
+  </div>` : '';
+
+  // ── Needs summary ─────────────────────────────────────────────────────────
+  const anyNonPri = result.needs.some(c => calcPriorityExcludes.has(c.char));
+  const hint = `<span class="needs-hint">💡 点击角色可切换优先级</span>`;
+  let summary = `<div class="needs-summary"><div class="needs-title">需要完成的成就：${hint}</div><div class="incomplete-list">`;
+  result.needs.forEach(({ char, needsGive, needsReceive }) => {
+    const cls = needsGive && needsReceive ? 'tag-both' : needsGive ? 'tag-give' : 'tag-recv';
+    const label = needsGive && needsReceive ? '放+被放' : needsGive ? '放烟花' : '被放烟花';
+    const acc = getAccountName(CHAR_ACC[char]);
+    const isNonPri = calcPriorityExcludes.has(char);
+    const star = isNonPri ? '☆' : '⭐';
+    const npCls = isNonPri ? ' non-priority' : '';
+    summary += `<span class="char-tag ${cls}${npCls}" data-char="${esc(char)}" onclick="toggleCharPriority(this.dataset.char)"><span class="priority-star">${star}</span>${charDisplay(char)}<small style="margin-left:3px">(${acc}) 缺:${label}</small></span>`;
+  });
+  summary += '</div></div>';
+
+  // ── Session cards with step connectors ───────────────────────────────────
+  let html = '';
+  // Sequential inventory tracking: simulate depletion as steps are processed in order
+  const giverFireCount = {};   // char → how many times they have fired so far
+
+  result.sessions.forEach((sess, idx) => {
+    const acc1Name = getAccountName(sess.acc1);
+    const acc2Name = getAccountName(sess.acc2);
+
+    if (idx > 0) {
+      const prev = result.sessions[idx - 1];
+      const prevSet = new Set([prev.acc1, prev.acc2]);
+      const changed = [sess.acc1, sess.acc2].filter(a => !prevSet.has(a)).length;
+      const switchText = changed === 2 ? '切换两个账号' : '切换一个账号';
+      html += `<div class="step-connector">
+        <div class="step-connector-line"></div>
+        <div class="step-connector-label">⇄ ${switchText}</div>
+        <div class="step-connector-line2"></div>
+      </div>`;
+    }
+
+    const isDone = !!calcSessChecked[idx];
+    const isPhaseB = sess.phase === 'B';
+    html += `<div class="session-card${isDone ? ' sess-done' : ''}${isPhaseB ? ' phase-b' : ''}" id="sess-card-${idx}">
+      <div class="session-head">
+        <span class="session-num">${idx + 1}</span>
+        同时开启：<b>${acc1Name}</b> ＋ <b>${acc2Name}</b>
+        ${isPhaseB ? '<span class="phase-b-tag">◎ 余粮补全</span>' : ''}
+        <div class="session-head-right">
+          <label class="sess-check-label" for="sess-chk-${idx}">已完成</label>
+          <input type="checkbox" class="sess-check" id="sess-chk-${idx}"
+            ${isDone ? 'checked' : ''} onchange="toggleSessCheck(${idx})">
+        </div>
+      </div>
+      <div class="session-body">`;
+
+    sess.interactions.forEach(ix => {
+      const giverAccName  = getAccountName(ix.giverAcc);
+      const receiverAccName = getAccountName(ix.receiverAcc);
+
+      // Sequential depletion: which fire-index is this for this char?
+      const fireIdx = giverFireCount[ix.giver] || 0;
+      giverFireCount[ix.giver] = fireIdx + 1;
+      const coveredCount   = cost.inventoryCoverage[ix.giver] || 0;
+      const isThisCovered  = fireIdx < coveredCount;   // THIS action uses existing inventory
+      const originalQty    = getAch(fw, ix.giver).quantity || 0;
+      const remainingAtFire = Math.max(0, originalQty - fireIdx); // inventory left when this fires
+
+      // Chip & badge
+      const invBadgeCls = `inv-badge${isThisCovered ? '' : ' inv-zero'}`;
+      const giverInvBadge = `<span class="${invBadgeCls}">🎒${remainingAtFire}</span>`;
+      const giverChipCls = `a-chip${ix.giverDummy ? ' dummy' : ''}${!isThisCovered ? ' needs-buy' : ''}`;
+      const giverChip = `<span class="${giverChipCls}">${charDisplay(ix.giver)}<span class="a-chip-acc">${giverAccName}</span>${giverInvBadge}</span>`;
+      const recvChip  = `<span class="a-chip${ix.receiverDummy ? ' dummy' : ''}">${charDisplay(ix.receiver)}<span class="a-chip-acc">${receiverAccName}</span></span>`;
+
+      const isWarnRow  = ix.giverDummy || ix.receiverDummy || !isThisCovered;
+      const rowClass   = 'action-row' + (isWarnRow ? ' action-row-warn' : '');
+
+      const mutualTag  = ix.mutual ? '<span class="a-mutual">⇄ 互放</span>' : ix.cycle ? '<span class="a-cycle">↻ 三方循环</span>' : '';
+      const coveredTag = isThisCovered  ? '<span class="a-covered-tag">✓ 库存抵扣</span>' : '';
+      const buyTag     = !isThisCovered ? '<span class="a-warn-tag" style="background:rgba(180,83,75,.10);border-color:rgba(180,83,75,.3);color:#7A1A1A">🛒 需购买</span>' : '';
+      const lentTag    = ix.giverIsLent ? '<span class="a-warn-tag" style="background:#EFF5FB;border-color:#8AAED4;color:#1A3A60">💧 核心角色借出库存</span>' : '';
+      const warnTag    = (ix.giverDummy || ix.receiverDummy) ? '<span class="a-warn-tag">⚠ 含已完成角色</span>' : '';
+
+      html += `<div class="${rowClass}">
+        ${giverChip}
+        <span class="a-arrow">🎆→</span>
+        ${recvChip}
+        ${mutualTag}${coveredTag}${buyTag}${warnTag}${lentTag}
+      </div>`;
+    });
+
+    html += '</div></div>';
+  });
+
+  // Empty-state notice when non-priority chars exist but no inventory remains for Phase B
+  const hasPhaseBSessions = result.sessions.some(s => s.phase === 'B');
+  if (result.nonPriorityNeeds && result.nonPriorityNeeds.length > 0 && !hasPhaseBSessions) {
+    const names = result.nonPriorityNeeds.map(c => charDisplay(c.char)).join('、');
+    html += `<div class="phase-b-empty">
+      <span class="phase-b-empty-icon">◎</span>
+      余下烟花不足，非优先角色（${names}）暂无法补全
+    </div>`;
+  }
+
+  el.innerHTML = `${summaryBar}${costBar}${summary}${html}`;
+}
+
+// ─── Add Modal ───────────────────────────────────────────────────────────────
+function openAddModal() {
+  const inp = document.getElementById('new-fw-name');
+  inp.value = '';
+  inp.classList.remove('input-error');
+  document.getElementById('fw-error-msg').classList.remove('show');
+  document.getElementById('btn-add-ok').disabled = true;
+  document.getElementById('add-modal').classList.add('show');
+  setTimeout(() => inp.focus(), 50);
+}
+
+function onFwNameInput() {
+  const inp = document.getElementById('new-fw-name');
+  const name = inp.value.trim();
+  const isDupe = name !== '' && state.fireworks.includes(name);
+  inp.classList.toggle('input-error', isDupe);
+  document.getElementById('fw-error-msg').classList.toggle('show', isDupe);
+  document.getElementById('btn-add-ok').disabled = name === '' || isDupe;
+}
+
+function closeModal() {
+  document.getElementById('add-modal').classList.remove('show');
+}
+
+function confirmAdd() {
+  const name = document.getElementById('new-fw-name').value.trim();
+  if (!name || state.fireworks.includes(name)) return;
+  state.fireworks.push(name);
+  currentFw = name;
+  saveState();
+  closeModal();
+  renderRecord();
+}
+
+// Custom fw dropdown: option selection
+document.getElementById('fw-select-dropdown').addEventListener('click', function(e) {
+  const opt = e.target.closest('.fw-select-opt');
+  if (!opt) return;
+  _selectedFw = opt.dataset.fw;
+  calcPriorityExcludes = new Set();   // reset priority on firework change
+  _updateFwTrigger();
+  closeFwDropdown();
+  document.getElementById('btn-calc').disabled = false;
+  document.getElementById('calc-btn-wrap').classList.remove('show-tip');
+  calcSessChecked = {};
+  document.getElementById('calc-result').innerHTML = '';
+});
+
+// Close dropdown on outside click
+document.addEventListener('click', function(e) {
+  const wrap = document.getElementById('fw-select-wrap');
+  if (wrap && !wrap.contains(e.target)) closeFwDropdown();
+});
+
+// Cycle tag hover: simultaneously highlight all three linked cycle interactions
+document.getElementById('calc-result').addEventListener('pointerover', function(e) {
+  if (e.target.closest('.a-cycle')) {
+    this.querySelectorAll('.a-cycle').forEach(el => el.classList.add('cycle-active'));
+  }
+});
+document.getElementById('calc-result').addEventListener('pointerout', function(e) {
+  if (e.target.closest('.a-cycle') && !e.relatedTarget?.closest?.('.a-cycle')) {
+    this.querySelectorAll('.a-cycle').forEach(el => el.classList.remove('cycle-active'));
+  }
+});
+
+// Close modals on background click
+document.getElementById('add-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+document.getElementById('settings-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeSettingsModal();
+});
+document.getElementById('restore-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeRestoreModal();
+});
+document.addEventListener('click', function(e) {
+  const pop = document.getElementById('popover-unarchive');
+  if (pop.classList.contains('show') && !pop.contains(e.target) && !e.target.classList.contains('btn-unarchive')) {
+    closeUnarchivePopover();
+  }
+});
+
+// ─── History Snapshots ───────────────────────────────────────────────────────
+const HISTORY_KEY = 'jx3_history_v2';
+const LOG_KEY = 'jx3_log_v2';
+
+function pushHistory(label) {
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch(e) {}
+  history.unshift({ ts: new Date().toLocaleString('zh-CN'), label, snap: JSON.stringify(state) });
+  if (history.length > 10) history = history.slice(0, 10);
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+}
+
+function addLog(msg) {
+  let logs = [];
+  try { logs = JSON.parse(localStorage.getItem(LOG_KEY) || '[]'); } catch(e) {}
+  logs.unshift({ ts: new Date().toLocaleString('zh-CN'), msg });
+  if (logs.length > 50) logs = logs.slice(0, 50);
+  localStorage.setItem(LOG_KEY, JSON.stringify(logs));
+}
+
+// ─── Toast (Undo Delete) ─────────────────────────────────────────────────────
+let deleteUndo = null;
+let toastTimeout = null;
+let toastTimerRaf = null;
+
+function showToast(fw) {
+  deleteUndo = { fw, snap: JSON.stringify(state) };
+  const el = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = `已删除「${fw}」`;
+  el.classList.add('show');
+  // Animate timer bar
+  const bar = document.getElementById('toast-timer');
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      bar.style.transition = 'width 5s linear';
+      bar.style.width = '0%';
+    });
+  });
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(hideToast, 5000);
+}
+
+function hideToast() {
+  clearTimeout(toastTimeout);
+  document.getElementById('toast').classList.remove('show');
+  deleteUndo = null;
+}
+
+function undoDelete() {
+  if (!deleteUndo) return;
+  const { snap } = deleteUndo;
+  try {
+    state = JSON.parse(snap);
+    normalizeState();
+    saveState();
+    renderRecord();
+    addLog(`↩ 撤销删除「${deleteUndo.fw}」`);
+  } catch(e) {}
+  hideToast();
+}
+
+// ─── Log Drawer ───────────────────────────────────────────────────────────────
+function openLogDrawer() {
+  renderLogDrawer();
+  document.getElementById('log-overlay').classList.add('show');
+  document.getElementById('log-drawer').classList.add('show');
+}
+
+function closeLogDrawer() {
+  document.getElementById('log-overlay').classList.remove('show');
+  document.getElementById('log-drawer').classList.remove('show');
+}
+
+const LOG_ICON_COLOR = { '🗑':'#C8504A', '📤':'#D4881A', '📦':'#2A7A6A', '↩':'#2A5080' };
+
+function renderLogDrawer() {
+  let logs = [];
+  try { logs = JSON.parse(localStorage.getItem(LOG_KEY) || '[]'); } catch(e) {}
+  const el = document.getElementById('log-list');
+  if (logs.length === 0) {
+    el.innerHTML = '<div class="log-empty">暂无操作记录</div>';
+    return;
+  }
+  el.innerHTML = logs.map(l => {
+    const chars = [...l.msg];
+    const icon  = chars[0];
+    const rest  = chars.slice(1).join('').trim();
+    const color = LOG_ICON_COLOR[icon] || 'var(--text-3)';
+    return `<div class="log-item">
+      <span class="log-icon" style="color:${color}">${icon}</span>
+      <div class="log-body">
+        <span class="log-text">${esc(rest)}</span>
+        <span class="log-ts">${l.ts}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+let _clearLogPending = false;
+let _clearLogTimer   = null;
+
+function _resetClearBtn() {
+  const btn = document.getElementById('btn-clear-log');
+  if (!btn) return;
+  btn.textContent = '清空日志';
+  btn.style.background = '';
+  btn.style.borderColor = '';
+  btn.style.color = '';
+  _clearLogPending = false;
+}
+
+function clearLog() {
+  const btn = document.getElementById('btn-clear-log');
+  if (!_clearLogPending) {
+    _clearLogPending = true;
+    btn.textContent = '确认清空？';
+    btn.style.background = '#FEF0EE';
+    btn.style.borderColor = '#C8504A';
+    btn.style.color = '#8A1A1A';
+    _clearLogTimer = setTimeout(_resetClearBtn, 3000);
+    return;
+  }
+  clearTimeout(_clearLogTimer);
+  localStorage.removeItem(LOG_KEY);
+  renderLogDrawer();
+  _resetClearBtn();
+}
+
+// ─── Utils ───────────────────────────────────────────────────────────────────
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── Init ────────────────────────────────────────────────────────────────────
+loadState();
+renderRecord();
+// 若已配置 URL，页面加载时自动从云端拉取最新数据
+if (scriptUrl) {
+  loadFromSheet().then(ok => { if (ok) renderRecord(); });
+}
+</script>
+</body>
+</html>
