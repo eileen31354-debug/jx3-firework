@@ -85,7 +85,11 @@ body::after{
 .fw-pill:hover{border-color:var(--primary);color:var(--primary);background:#FEF8F6}
 .fw-pill.active{background:#FEF0EE;border-color:var(--primary);color:var(--primary);box-shadow:0 3px 10px rgba(180,83,75,.15);position:relative}
 .fw-pill.active::after{content:'';position:absolute;bottom:-1px;left:15%;right:15%;height:2px;background:linear-gradient(90deg,transparent,var(--primary) 40%,var(--primary) 60%,transparent);border-radius:2px}
-.fw-pill.is-archived{opacity:.45;text-decoration:line-through}
+.fw-pill.is-archived{opacity:.5}
+.fw-pill-toggle{background:var(--surface);border:1px dashed var(--border);color:var(--text-3);font-size:13px}.fw-pill-toggle:hover,.fw-pill-toggle.open{border-color:var(--gold);color:var(--text-2);background:var(--gold-lt)}
+@keyframes count-bump{0%{transform:translateY(0) scale(1)}35%{transform:translateY(-6px) scale(1.35)}70%{transform:translateY(1px) scale(.95)}100%{transform:translateY(0) scale(1)}}
+.count-bump{animation:count-bump .42s cubic-bezier(.36,.07,.19,.97)}
+.fw-bar-archived{display:none;flex-wrap:wrap;gap:8px;background:rgba(168,132,98,.05);border:1px solid var(--border-soft);border-radius:var(--radius);padding:10px 14px;margin-bottom:16px}.fw-bar-archived.show{display:flex}
 .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .dot-full{background:#4CAF72}
 .dot-partial{background:#CFA020}
@@ -450,6 +454,7 @@ tr:hover:not(.acc-sep) td{background:var(--hover-row)!important}
       <!-- firework pills injected here -->
       <button class="btn btn-add" onclick="openAddModal()">＋ 添加烟花</button>
     </div>
+    <div class="fw-bar-archived" id="fw-bar-archived"></div>
     <div id="fw-content"></div>
   </div>
 
@@ -820,23 +825,53 @@ function renderRecord() {
   renderFwContent();
 }
 
+let _archivedPillsOpen = false;
+
 function renderFwBar() {
   const bar = document.getElementById('fw-bar');
-  // Keep add button
+  const archivedBar = document.getElementById('fw-bar-archived');
   const addBtn = bar.querySelector('.btn-add');
   bar.innerHTML = '';
-  state.fireworks.forEach(fw => {
+
+  const activeFws  = state.fireworks.filter(fw => !state.archived.includes(fw));
+  const archivedFws = state.fireworks.filter(fw =>  state.archived.includes(fw));
+
+  // Auto-expand if currentFw is archived
+  if (currentFw && state.archived.includes(currentFw)) _archivedPillsOpen = true;
+
+  activeFws.forEach(fw => {
     const status = getFwStatus(fw);
-    const archived = state.archived.includes(fw);
-    const dotClass = archived ? 'dot-full' : (status === 'full' ? 'dot-full' : status === 'partial' ? 'dot-partial' : 'dot-empty');
+    const dotClass = status === 'full' ? 'dot-full' : status === 'partial' ? 'dot-partial' : 'dot-empty';
     const pill = document.createElement('div');
-    pill.className = 'fw-pill' + (fw === currentFw ? ' active' : '') + (archived ? ' is-archived' : '');
-    const doneTag = (archived || status === 'full') ? `<span style="color:#4CAF72;font-size:11px;font-weight:700;margin-left:2px">✓</span>` : '';
+    pill.className = 'fw-pill' + (fw === currentFw ? ' active' : '');
+    const doneTag = status === 'full' ? `<span style="color:#4CAF72;font-size:11px;font-weight:700;margin-left:2px">✓</span>` : '';
     pill.innerHTML = `<span class="dot ${dotClass}"></span>${fw}${doneTag}`;
     pill.onclick = () => { currentFw = fw; renderRecord(); };
     bar.appendChild(pill);
   });
+
+  if (archivedFws.length > 0) {
+    const toggleBtn = document.createElement('div');
+    toggleBtn.className = 'fw-pill fw-pill-toggle' + (_archivedPillsOpen ? ' open' : '');
+    toggleBtn.innerHTML = `📦 已完成&nbsp;(<span id="fw-archived-count" style="display:inline-block">${archivedFws.length}</span>)&nbsp;${_archivedPillsOpen ? '▴' : '▾'}`;
+    toggleBtn.onclick = () => { _archivedPillsOpen = !_archivedPillsOpen; renderFwBar(); };
+    bar.appendChild(toggleBtn);
+  }
+
   bar.appendChild(addBtn);
+
+  // Archived row
+  if (archivedBar) {
+    archivedBar.innerHTML = '';
+    archivedBar.classList.toggle('show', _archivedPillsOpen && archivedFws.length > 0);
+    archivedFws.forEach(fw => {
+      const pill = document.createElement('div');
+      pill.className = 'fw-pill is-archived' + (fw === currentFw ? ' active' : '');
+      pill.innerHTML = `<span class="dot dot-full"></span>${fw}<span style="color:#4CAF72;font-size:11px;font-weight:700;margin-left:2px">✓</span>`;
+      pill.onclick = () => { currentFw = fw; renderRecord(); };
+      archivedBar.appendChild(pill);
+    });
+  }
 }
 
 function renderFwContent() {
@@ -934,6 +969,13 @@ function archiveFw(fw) {
   saveState();
   renderFwBar();
   renderFwContent();
+  const countEl = document.getElementById('fw-archived-count');
+  if (countEl) {
+    countEl.classList.remove('count-bump');
+    void countEl.offsetWidth;
+    countEl.classList.add('count-bump');
+    countEl.addEventListener('animationend', () => countEl.classList.remove('count-bump'), { once: true });
+  }
 }
 
 function deleteFw(fw) {
@@ -1207,8 +1249,8 @@ function doSearch() {
 let _selectedFw = '';
 
 function renderCalcSelect() {
-  // If previously selected firework was removed, clear selection
-  if (_selectedFw && !state.fireworks.includes(_selectedFw)) {
+  // Clear selection if firework was removed or is now archived
+  if (_selectedFw && (!state.fireworks.includes(_selectedFw) || state.archived.includes(_selectedFw))) {
     _selectedFw = '';
     _updateFwTrigger();
     document.getElementById('btn-calc').disabled = true;
@@ -1220,12 +1262,18 @@ function renderCalcSelect() {
 function _rebuildFwDropdown() {
   const dropdown = document.getElementById('fw-select-dropdown');
   if (!dropdown) return;
-  dropdown.innerHTML = state.fireworks.map(fw => {
-    const isArchived = state.archived.includes(fw);
-    const badge = isArchived ? '<span class="fw-opt-badge">📦 已存档</span>' : '';
+  const activeFws = state.fireworks.filter(fw => !state.archived.includes(fw));
+  if (activeFws.length === 0) {
+    const archivedCount = state.archived.length;
+    dropdown.innerHTML = `<div style="padding:12px 14px;font-size:13px;color:var(--text-3)">${
+      archivedCount > 0 ? `所有烟花均已完成存档 🎉` : '暂无烟花记录'
+    }</div>`;
+    return;
+  }
+  dropdown.innerHTML = activeFws.map(fw => {
     const sel = fw === _selectedFw ? ' selected' : '';
-    return `<div class="fw-select-opt${sel}" data-fw="${esc(fw)}"><span class="fw-opt-name">${esc(fw)}</span>${badge}</div>`;
-  }).join('') || '<div style="padding:12px 14px;font-size:13px;color:var(--text-3)">暂无烟花记录</div>';
+    return `<div class="fw-select-opt${sel}" data-fw="${esc(fw)}"><span class="fw-opt-name">${esc(fw)}</span></div>`;
+  }).join('');
 }
 
 function _updateFwTrigger() {
