@@ -855,6 +855,12 @@ function isFullyDone(fw) {
 let currentMainTab = 'record';
 let currentFw = null;
 
+function firstActiveFw() {
+  return state.fireworks.find(fw => !state.archived.includes(fw))
+    || state.fireworks[0]
+    || null;
+}
+
 function switchTab(tab) {
   currentMainTab = tab;
   document.querySelectorAll('.main-tab').forEach((el, i) => {
@@ -872,7 +878,7 @@ function switchTab(tab) {
 function renderRecord() {
   renderFwBar();
   if (!currentFw || !state.fireworks.includes(currentFw)) {
-    currentFw = state.fireworks[0] || null;
+    currentFw = firstActiveFw();
   }
   renderFwContent();
 }
@@ -898,7 +904,7 @@ function renderFwBar() {
     pill.className = 'fw-pill' + (fw === currentFw ? ' active' : '');
     const doneTag = status === 'full' ? `<span style="color:#4CAF72;font-size:11px;font-weight:700;margin-left:2px">✓</span>` : '';
     pill.innerHTML = `<span class="dot ${dotClass}"></span>${fw}${doneTag}`;
-    pill.onclick = () => { currentFw = fw; renderRecord(); };
+    pill.onclick = () => { currentFw = fw; localStorage.setItem('jx3_last_fw', fw); renderRecord(); };
     bar.appendChild(pill);
   });
 
@@ -920,7 +926,7 @@ function renderFwBar() {
       const pill = document.createElement('div');
       pill.className = 'fw-pill is-archived' + (fw === currentFw ? ' active' : '');
       pill.innerHTML = `<span class="dot dot-full"></span>${fw}<span style="color:#4CAF72;font-size:11px;font-weight:700;margin-left:2px">✓</span>`;
-      pill.onclick = () => { currentFw = fw; renderRecord(); };
+      pill.onclick = () => { currentFw = fw; localStorage.setItem('jx3_last_fw', fw); renderRecord(); };
       archivedBar.appendChild(pill);
     });
   }
@@ -1061,7 +1067,7 @@ function deleteFw(fw) {
   state.archived = state.archived.filter(f => f !== fw);
   delete state.archivedDates[fw];
   delete state.achievements[fw];
-  if (currentFw === fw) currentFw = state.fireworks[0] || null;
+  if (currentFw === fw) currentFw = firstActiveFw();
   addLog(`🗑 删除烟花「${fw}」`);
   saveState();
   renderRecord();
@@ -2117,6 +2123,10 @@ function esc(s) {
 
 // ─── Init ────────────────────────────────────────────────────────────────────
 loadState();
+(function initCurrentFw() {
+  const saved = localStorage.getItem('jx3_last_fw');
+  currentFw = (saved && state.fireworks.includes(saved)) ? saved : firstActiveFw();
+})();
 renderRecord();
 // 若已配置 URL，页面加载时自动从云端拉取最新数据
 if (scriptUrl) {
