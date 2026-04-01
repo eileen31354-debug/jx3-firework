@@ -110,6 +110,14 @@ body::after{
 .fw-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md)}
 .fw-section-header{background:var(--gold-lt);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--border)}
 .fw-section-title{font-family:'Noto Serif SC','SimSun',serif;font-size:1.15em;color:#4A2E1A;letter-spacing:3px}
+.fw-title-group{display:flex;align-items:center;gap:8px}
+.btn-edit-fw{background:none;border:none;color:var(--text-3);font-size:14px;cursor:pointer;padding:3px 5px;border-radius:5px;line-height:1;opacity:0;transition:color .15s,background .15s,opacity .2s}
+.fw-section-header:hover .btn-edit-fw{opacity:1}
+.btn-edit-fw:hover{color:var(--primary);background:rgba(180,83,75,.08);opacity:1}
+.edit-fw-name-row{display:flex;align-items:center;gap:14px;padding:10px 14px;background:var(--gold-lt);border-radius:7px;margin-bottom:4px}
+.edit-fw-name-label{font-size:12px;color:var(--text-3)}
+.edit-fw-name-val{font-size:14px;color:var(--text);font-weight:600;opacity:.75}
+.edit-fw-lock{font-size:12px;opacity:.45;margin-left:auto}
 .header-actions{display:flex;gap:8px;align-items:center}
 
 /* ── 表格 ───────────────────────────────────────────── */
@@ -151,7 +159,9 @@ tr:hover:not(.acc-sep) td{background:var(--hover-row)!important}
 .qty-wrap{display:flex;align-items:center;justify-content:center;gap:4px}
 .qty-btn{background:transparent;border:none;color:#C0B8B0;width:24px;height:24px;border-radius:6px;cursor:pointer;font-size:18px;line-height:1;padding:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
 .qty-btn:hover{color:var(--primary);transform:scale(1.2)}
-.qty-val{min-width:36px;text-align:center;background:#F0EBE3;border:none;color:#555;font-size:13px;font-weight:600;padding:4px 6px;border-radius:6px}
+.qty-val{min-width:36px;width:36px;text-align:center;background:#F0EBE3;border:none;color:#555;font-size:13px;font-weight:600;padding:4px 6px;border-radius:6px;outline:none;cursor:default;-moz-appearance:textfield;appearance:textfield}
+.qty-val:focus{background:#E6DDD4;cursor:text}
+.qty-val::-webkit-inner-spin-button,.qty-val::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 
 /* ── 搜索 ───────────────────────────────────────────── */
 .search-wrap{display:flex;gap:10px;margin-bottom:20px}
@@ -320,6 +330,11 @@ tr:hover:not(.acc-sep) td{background:var(--hover-row)!important}
 .modal input.input-error{border-color:#C8504A;box-shadow:0 0 0 3px rgba(180,83,75,.12)}
 .fw-error-msg{font-size:12px;color:#B03030;padding-left:2px;display:none;line-height:1.4}
 .fw-error-msg.show{display:block}
+.fw-self-toggle{margin-top:14px;padding-top:12px;border-top:1px solid var(--border-soft);margin-bottom:6px}
+.fw-self-label{display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:14px;color:var(--text);line-height:1.4}
+.fw-self-label input[type=checkbox]{width:15px;height:15px;accent-color:var(--primary);cursor:pointer;flex-shrink:0;margin-top:1px}
+.fw-self-label span{display:inline-block;transform:translateY(-1px)}
+.fw-self-hint{font-size:11.5px;color:#999;margin-top:6px;padding-left:24px;line-height:1.6}
 .btn-ok:disabled{opacity:.4;cursor:not-allowed;box-shadow:none !important;pointer-events:none}
 .modal-btns{display:flex;gap:16px;justify-content:flex-end}
 .btn-ok{background:var(--primary);border-color:var(--primary-dk);color:#fff;padding:8px 22px;border-radius:7px;transition:background .2s,box-shadow .2s}.btn-ok:hover{background:var(--primary-dk);box-shadow:0 4px 14px rgba(180,83,75,.35)}
@@ -591,6 +606,29 @@ tr:hover:not(.acc-sep) td{background:var(--hover-row)!important}
   </div>
 </div>
 
+<!-- Edit Firework Properties Modal -->
+<div class="modal-bg" id="edit-fw-modal">
+  <div class="modal">
+    <h3><span style="opacity:.65;margin-right:6px;font-size:.85em">⚙</span>编辑烟花属性</h3>
+    <div class="edit-fw-name-row">
+      <span class="edit-fw-name-label">烟花名称</span>
+      <span class="edit-fw-name-val" id="edit-fw-name-display"></span>
+      <span class="edit-fw-lock">🔒</span>
+    </div>
+    <div class="fw-self-toggle">
+      <label class="fw-self-label">
+        <input type="checkbox" id="edit-fw-self">
+        <span>包含「自放」成就</span>
+      </label>
+      <div class="fw-self-hint">勾选后，记录表将增加「自放」进度统计。</div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-cancel" onclick="closeEditFwModal()">取消</button>
+      <button class="btn btn-ok" onclick="confirmEditFw()">保存</button>
+    </div>
+  </div>
+</div>
+
 <!-- Add Firework Modal -->
 <div class="modal-bg" id="add-modal">
   <div class="modal">
@@ -600,6 +638,13 @@ tr:hover:not(.acc-sep) td{background:var(--hover-row)!important}
         oninput="onFwNameInput()"
         onkeydown="if(event.key==='Enter')confirmAdd()">
       <div class="fw-error-msg" id="fw-error-msg">此烟花已在记录中</div>
+    </div>
+    <div class="fw-self-toggle">
+      <label class="fw-self-label">
+        <input type="checkbox" id="new-fw-self">
+        <span>包含「自放」成就</span>
+      </label>
+      <div class="fw-self-hint">勾选后，记录表将增加「自放」进度统计。</div>
     </div>
     <div class="modal-btns">
       <button class="btn btn-cancel" onclick="closeModal()">取消</button>
@@ -658,7 +703,8 @@ let state = {
   fireworks: ['真橙之心', '海誓山盟'],
   archived: [],
   archivedDates: {},
-  achievements: {}
+  achievements: {},
+  selfFireFws: []
 };
 
 function normalizeState() {
@@ -666,6 +712,7 @@ function normalizeState() {
   if (!state.archived) state.archived = [];
   if (!state.archivedDates) state.archivedDates = {};
   if (!state.achievements) state.achievements = {};
+  if (!state.selfFireFws) state.selfFireFws = [];
 }
 
 function loadState() {
@@ -784,11 +831,12 @@ function getAch(fw, char) {
 // ─── Status ──────────────────────────────────────────────────────────────────
 function getFwStatus(fw) {
   // returns 'full', 'partial', 'empty'
+  const hasSelf = state.selfFireFws && state.selfFireFws.includes(fw);
   let any = false, all = true;
   for (const ch of ALL_CHARS) {
     const a = getAch(fw, ch);
-    if (a.give || a.receive) any = true;
-    if (!a.give || !a.receive) all = false;
+    if (a.give || a.receive || a.self) any = true;
+    if (!a.give || !a.receive || (hasSelf && !a.self)) all = false;
   }
   if (all) return 'full';
   if (any) return 'partial';
@@ -796,7 +844,11 @@ function getFwStatus(fw) {
 }
 
 function isFullyDone(fw) {
-  return ALL_CHARS.every(ch => { const a = getAch(fw, ch); return a.give && a.receive; });
+  const hasSelf = state.selfFireFws && state.selfFireFws.includes(fw);
+  return ALL_CHARS.every(ch => {
+    const a = getAch(fw, ch);
+    return a.give && a.receive && (!hasSelf || !!a.self);
+  });
 }
 
 // ─── Tabs ────────────────────────────────────────────────────────────────────
@@ -889,9 +941,18 @@ function renderFwContent() {
   const allDone = isFullyDone(fw);
   const delStyle = allDone ? 'opacity:.4' : '';
 
+  const hasSelf = state.selfFireFws && state.selfFireFws.includes(fw);
+  const colCount = hasSelf ? 6 : 5;
+  const selfTh = hasSelf
+    ? `<th>自放烟花<br><small style="color:#999">(放给自己)</small></th>`
+    : '';
+
   let html = `<div class="fw-section${allDone ? ' fw-complete' : ''}">
     <div class="fw-section-header">
-      <span class="fw-section-title">${esc(fw)}</span>
+      <div class="fw-title-group">
+        <span class="fw-section-title">${esc(fw)}</span>
+        <button class="btn-edit-fw" onclick="openEditFwModal('${esc(fw)}')" title="编辑烟花属性">⚙</button>
+      </div>
       <div class="header-actions">
         ${archivedBadge}
         ${archiveBtn}
@@ -901,6 +962,7 @@ function renderFwContent() {
     <table>
       <thead><tr>
         <th>账号</th><th>角色</th>
+        ${selfTh}
         <th>放烟花<br><small style="color:#999">(给他人)</small></th>
         <th>被放烟花<br><small style="color:#999">(他人给我)</small></th>
         <th>拥有数量</th>
@@ -908,18 +970,24 @@ function renderFwContent() {
       <tbody>`;
 
   ACCOUNTS.forEach(acc => {
-    html += `<tr class="acc-sep" data-acc="${acc.id}"><td colspan="5">▸ ${acc.name}</td></tr>`;
+    html += `<tr class="acc-sep" data-acc="${acc.id}"><td colspan="${colCount}">▸ ${acc.name}</td></tr>`;
     acc.chars.forEach(ch => {
       const a = getAch(fw, ch);
+      const selfCell = hasSelf
+        ? `<td><span class="chk ${a.self?'on':'off'}" onclick="toggleAch('${esc(fw)}','${esc(ch)}','self')" title="点击切换">${a.self?'✔':'○'}</span></td>`
+        : '';
       html += `<tr>
         <td></td>
         <td class="char-name">${charDisplay(ch)}</td>
+        ${selfCell}
         <td><span class="chk ${a.give?'on':'off'}" onclick="toggleAch('${esc(fw)}','${esc(ch)}','give')" title="点击切换">${a.give?'✔':'○'}</span></td>
         <td><span class="chk ${a.receive?'on':'off'}" onclick="toggleAch('${esc(fw)}','${esc(ch)}','receive')" title="点击切换">${a.receive?'✔':'○'}</span></td>
         <td>
           <div class="qty-wrap">
             <button class="qty-btn" onclick="changeQty('${esc(fw)}','${esc(ch)}',-1)">−</button>
-            <span class="qty-val">${a.quantity}</span>
+            <input type="number" class="qty-val" min="0" value="${a.quantity}"
+              onblur="setQty('${esc(fw)}','${esc(ch)}',this.value)"
+              onkeydown="if(event.key==='Enter'){setQty('${esc(fw)}','${esc(ch)}',this.value);this.blur()}">
             <button class="qty-btn" onclick="changeQty('${esc(fw)}','${esc(ch)}',1)">＋</button>
           </div>
         </td>
@@ -955,6 +1023,14 @@ function toggleAch(fw, ch, field) {
 function changeQty(fw, ch, delta) {
   const a = getAch(fw, ch);
   a.quantity = Math.max(0, (a.quantity || 0) + delta);
+  saveState();
+  renderFwContent();
+}
+
+function setQty(fw, ch, val) {
+  const a = getAch(fw, ch);
+  const n = parseInt(val, 10);
+  a.quantity = (isNaN(n) || n < 0) ? 0 : n;
   saveState();
   renderFwContent();
 }
@@ -1798,6 +1874,35 @@ function onFwNameInput() {
 
 function closeModal() {
   document.getElementById('add-modal').classList.remove('show');
+  document.getElementById('new-fw-self').checked = false;
+}
+
+let _editingFw = null;
+function openEditFwModal(fw) {
+  _editingFw = fw;
+  document.getElementById('edit-fw-name-display').textContent = fw;
+  document.getElementById('edit-fw-self').checked = !!(state.selfFireFws && state.selfFireFws.includes(fw));
+  document.getElementById('edit-fw-modal').classList.add('show');
+}
+function closeEditFwModal() {
+  document.getElementById('edit-fw-modal').classList.remove('show');
+  _editingFw = null;
+}
+function confirmEditFw() {
+  if (!_editingFw) return;
+  const fw = _editingFw;
+  const wantSelf = document.getElementById('edit-fw-self').checked;
+  const hasSelf = !!(state.selfFireFws && state.selfFireFws.includes(fw));
+  if (wantSelf && !hasSelf) {
+    state.selfFireFws.push(fw);
+    addLog(`✨ 开启「${fw}」的自放成就统计`);
+  } else if (!wantSelf && hasSelf) {
+    state.selfFireFws = state.selfFireFws.filter(f => f !== fw);
+    addLog(`✖ 关闭「${fw}」的自放成就统计`);
+  }
+  saveState();
+  closeEditFwModal();
+  renderRecord();
 }
 
 let _achPendingFw = null;
@@ -1817,6 +1922,9 @@ function confirmAdd() {
   const name = document.getElementById('new-fw-name').value.trim();
   if (!name || state.fireworks.includes(name)) return;
   state.fireworks.push(name);
+  if (document.getElementById('new-fw-self').checked) {
+    state.selfFireFws.push(name);
+  }
   currentFw = name;
   saveState();
   closeModal();
